@@ -53,7 +53,7 @@ class CI_Lang {
 	 *
 	 * @var	array
 	 */
-	public $language =	array('portuguese');
+	public $language =	array();
 
 	/**
 	 * List of loaded language files
