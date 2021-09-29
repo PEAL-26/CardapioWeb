@@ -17,6 +17,22 @@ class CategoriaController extends CI_Controller
         $this->load->view('categorias/index', $dados);
     }
 
+    public function Details($id)
+    {
+        $dados['titulo'] = 'Categoria';
+        $dados['sub_titulo'] = 'Detalhes';
+        $dados['categoria']  = $this->CategoriaModel->BuscarPorId($id);
+
+        if ($dados['categoria'] == null) {
+            $erro["heading"] = "Categoria";
+            $erro["message"] = "Categoria não econtrada.";
+            $this->load->view('errors/html/error_404',  $erro);
+            return;
+        }
+
+        $this->load->view('categorias/details', $dados);
+    }
+
     public function Create()
     {
         $dados['titulo'] = 'Categoria';
@@ -44,16 +60,25 @@ class CategoriaController extends CI_Controller
         $dados['titulo'] = 'Categoria';
         $dados['sub_titulo'] = 'Editar';
         $dados['categoria']  = $this->CategoriaModel->BuscarPorId($id);
-        
+
         $this->form_validation->set_rules('nome', 'Nome', 'required');
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('categorias/edit', $dados);
         } else {
+            
             $categoria = array(
+                "id" => $this->input->post('id'),
                 "nome" => $this->input->post('nome')
             );
+    
+            if ($dados['categoria'] == null || $id != $categoria["id"]) {
+                $erro["heading"] = "Categoria";
+                $erro["message"] = "Categoria não econtrada.";
+                $this->load->view('errors/html/error_404',  $erro);
+                return;
+            }
 
-            $resultado = $this->CategoriaModel->Alterar($categoria);
+            $resultado = $this->CategoriaModel->Alterar($id, $categoria);
 
             if ($resultado) {
                 redirect('categoria');
@@ -67,9 +92,8 @@ class CategoriaController extends CI_Controller
     {
         $resultado = $this->CategoriaModel->Remover($id);
         if ($resultado) {
-             redirect('categoria', 'refresh'); 
+            redirect('categoria', 'refresh');
         } else {
-            
         }
     }
 }

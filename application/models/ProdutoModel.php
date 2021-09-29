@@ -29,26 +29,29 @@ class ProdutoModel extends CI_Model
 
     public function ListarTodos()
     {
-        $this->db->select('id, nome, descricao, valor, imagem');
-        $this->db->from('produto');
+        $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');
+        $this->db->from('produto p ');
+        $this->db->join('categoria c', 'c.id = p.categoria_id');
         $query = $this->db->get();
         return $query->result();
     }
 
     public function BuscarPorId($id)
     {
-        $this->db->select('id, nome, descricao, valor, imagem');
-        $this->db->from('produto');
-        $this->db->where('id =', $id);
+        $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');
+        $this->db->from('produto p ');
+        $this->db->join('categoria c', 'c.id = p.categoria_id');
+        $this->db->where('p.id =', $id);
         $query = $this->db->get();
         return $query->row();
     }
 
     public function BuscarPorNome($nome)
     {
-        $this->db->select('id, nome, descricao, valor, imagem');
-        $this->db->from('produto');
-        $this->db->like('nome LIKE ', $nome);
+        $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');
+        $this->db->from('produto p ');
+        $this->db->join('categoria c', 'c.id = p.categoria_id');
+        $this->db->like('p.nome LIKE ', $nome);
         $query = $this->db->get();
         return $query->row();
     }

@@ -5,6 +5,7 @@ class produtoController extends CI_Controller
     {
         parent::__construct();
         $this->load->model('ProdutoModel');
+        $this->load->model('CategoriaModel');
         $this->load->helper('form');
         $this->load->library('form_validation');
     }
@@ -17,23 +18,42 @@ class produtoController extends CI_Controller
         $this->load->view('produtos/index', $dados);
     }
 
+    public function Details($id)
+    {
+        $dados['titulo'] = 'Produto';
+        $dados['sub_titulo'] = 'Detalhes';
+        $dados['produto']  = $this->ProdutoModel->BuscarPorId($id);
+
+        if ($dados['produto'] == null) {
+            $erro["heading"] = "Erro!";
+            $erro["message"] = "Produto não econtrada.";
+            $this->load->view('errors/html/error_404',  $erro);
+            return;
+        }
+
+        $this->load->view('produtos/details', $dados);
+    }
+
     public function Create()
     {
         $dados['titulo'] = 'Produto';
         $dados['sub_titulo'] = 'Cadastrar';
+        $dados['categorias'] = $this->CategoriaModel->ListarTodos();
+
         $this->form_validation->set_rules('nome', 'Nome', 'required');
         $this->form_validation->set_rules('categoria_id', 'Categoria', 'required');
         $this->form_validation->set_rules('valor', 'Valor', 'required');
-        $this->form_validation->set_rules('imagem', 'Imagem', 'required');
+
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('produtos/create', $dados);
         } else {
+
             $produto = array(
                 "categoria_id" => $this->input->post('categoria_id'),
                 "nome" => $this->input->post('nome'),
                 "descricao" => $this->input->post('descricao'),
                 "valor" => $this->input->post('valor'),
-                "imagem" => $this->input->post('imagem')
+                "imagem" => $this->input->post('imagem') ? 'assets/imagem/' . $this->input->post('imagem'):''
             );
 
             $resultado = $this->ProdutoModel->Inserir($produto);
@@ -50,26 +70,31 @@ class produtoController extends CI_Controller
     {
         $dados['titulo'] = 'Produto';
         $dados['sub_titulo'] = 'Editar';
-       
-        $produto = array(
-            "id" => $this->input->post('id'),
-            "categoria_id" => $this->input->post('categoria_id'),
-            "nome" => $this->input->post('nome'),
-            "descricao" => $this->input->post('descricao'),
-            "valor" => $this->input->post('valor'),
-            "imagem" => $this->input->post('imagem')
-        );
-
-        if ($id != $produto["id"]) return NotFound();
+        $dados['produto']  = $this->ProdutoModel->BuscarPorId($id);
+        $dados['categorias'] = $this->CategoriaModel->ListarTodos();
 
         $this->form_validation->set_rules('nome', 'Nome', 'required');
         $this->form_validation->set_rules('categoria_id', 'Categoria', 'required');
         $this->form_validation->set_rules('valor', 'Valor', 'required');
-        $this->form_validation->set_rules('imagem', 'Imagem', 'required');
+
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('produtos/edit', $dados);
         } else {
+            $produto = array(
+                "id" => $this->input->post('id'),
+                "categoria_id" => $this->input->post('categoria_id'),
+                "nome" => $this->input->post('nome'),
+                "descricao" => $this->input->post('descricao'),
+                "valor" => $this->input->post('valor'),
+                "imagem" => $this->input->post('imagem') ? 'assets/imagem/' . $this->input->post('imagem'):''
+            );
 
+            if ($dados['produto'] == null || $id != $produto["id"]) {
+                $erro["heading"] = "Erro!";
+                $erro["message"] = "Produto não econtrada.";
+                $this->load->view('errors/html/error_404',  $erro);
+                return;
+            }
 
             $resultado = $this->ProdutoModel->Alterar($id, $produto);
 
