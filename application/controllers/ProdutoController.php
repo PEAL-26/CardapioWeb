@@ -38,6 +38,7 @@ class produtoController extends CI_Controller
     {
         $dados['titulo'] = 'Produto';
         $dados['sub_titulo'] = 'Cadastrar';
+        $dados['msg'] = '';
         $dados['categorias'] = $this->CategoriaModel->ListarTodos();
 
         $this->form_validation->set_rules('nome', 'Nome', 'required');
@@ -48,21 +49,48 @@ class produtoController extends CI_Controller
             $this->load->view('produtos/create', $dados);
         } else {
 
-            $produto = array(
-                "categoria_id" => $this->input->post('categoria_id'),
-                "nome" => $this->input->post('nome'),
-                "descricao" => $this->input->post('descricao'),
-                "valor" => $this->input->post('valor'),
-                "imagem" => $this->input->post('imagem') ? 'assets/imagem/' . $this->input->post('imagem'):''
-            );
-
-            $resultado = $this->ProdutoModel->Inserir($produto);
+            $carregar_imagem = $this->UploadImage();
+            if ($carregar_imagem["sucess"]){ 
+                $produto = array(
+                    "categoria_id" => $this->input->post('categoria_id'),
+                    "nome" => $this->input->post('nome'),
+                    "descricao" => $this->input->post('descricao'),
+                    "valor" => $this->input->post('valor'),
+                    "imagem" =>  $carregar_imagem["resultado"]
+                );
+        
+                $resultado = $this->ProdutoModel->Inserir($produto);
+            }else{
+                $resultado = FALSE;
+                $dados['msg'] = $carregar_imagem["resultado"];
+            }
 
             if ($resultado) {
                 redirect('produto');
             } else {
                 $this->load->view('produtos/create',  $dados);
             }
+            
+        }
+    }
+
+    private function UploadImage()
+    {
+        $imagem_selecionada = $this->input->post('nome_imagem');
+        if (empty($imagem_selecionada))
+            return array("sucess" => TRUE, "resultado" => '');
+
+        $conf["upload_path"] = "assets/imagens/";
+        $conf["max_size"] = 2048;
+        $conf["allowed_types"] = "gif|jpg|jpeg|png";
+        $this->load->library('upload', $conf);
+
+        if ($this->upload->do_upload('imagem')) {
+            $nome_imagem =  $this->upload->data();
+            $localizacao =  $conf["upload_path"] . $nome_imagem["file_name"];
+            return array("sucess" => TRUE, "resultado" => $localizacao);
+        } else {
+            return array("sucess" => FALSE, "resultado" => $this->upload->display_errors());
         }
     }
 
@@ -80,29 +108,35 @@ class produtoController extends CI_Controller
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('produtos/edit', $dados);
         } else {
-            $produto = array(
-                "id" => $this->input->post('id'),
-                "categoria_id" => $this->input->post('categoria_id'),
-                "nome" => $this->input->post('nome'),
-                "descricao" => $this->input->post('descricao'),
-                "valor" => $this->input->post('valor'),
-                "imagem" => $this->input->post('imagem') ? 'assets/imagem/' . $this->input->post('imagem'):''
-            );
+            $carregar_imagem = $this->UploadImage();
+            if ($carregar_imagem["sucess"]){ 
+                $produto = array(
+                    "id" => $this->input->post('id'),
+                    "categoria_id" => $this->input->post('categoria_id'),
+                    "nome" => $this->input->post('nome'),
+                    "descricao" => $this->input->post('descricao'),
+                    "valor" => $this->input->post('valor'),
+                    "imagem" =>  $carregar_imagem["resultado"]
+                );
+        
+                if ($dados['produto'] == null || $id != $produto["id"]) {
+                    $erro["heading"] = "Erro!";
+                    $erro["message"] = "Produto não econtrada.";
+                    $this->load->view('errors/html/error_404',  $erro);
+                    return;
+                }
 
-            if ($dados['produto'] == null || $id != $produto["id"]) {
-                $erro["heading"] = "Erro!";
-                $erro["message"] = "Produto não econtrada.";
-                $this->load->view('errors/html/error_404',  $erro);
-                return;
+                 $resultado = $this->ProdutoModel->Alterar($id, $produto);
+            }else{
+                $resultado = FALSE;
+                $dados['msg'] = $carregar_imagem["resultado"];
             }
-
-            $resultado = $this->ProdutoModel->Alterar($id, $produto);
 
             if ($resultado) {
                 redirect('produto');
             } else {
-                $this->load->view('produtos/edit',  $dados);
-            }
+                $this->load->view('produtos/create',  $dados);
+            }          
         }
     }
 

@@ -1,7 +1,8 @@
-$(document).ready(function() {
-    $('.parallax').parallax();
+$(document).ready(function () {
+    $barraMenu = $('.menu');
+    $barraMenu.pushpin({ top: $barraMenu.offset().top });
+    $('.sidenav').sidenav();
 });
-
 
 function Delete(url) {
     Swal.fire({
@@ -17,3 +18,4 @@ function Delete(url) {
         }
     });
 }
+

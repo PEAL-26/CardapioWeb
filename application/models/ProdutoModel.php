@@ -32,6 +32,7 @@ class ProdutoModel extends CI_Model
         $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');
         $this->db->from('produto p ');
         $this->db->join('categoria c', 'c.id = p.categoria_id');
+        $this->db->order_by('c.Nome, p.nome');
         $query = $this->db->get();
         return $query->result();
     }

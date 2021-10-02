@@ -8,14 +8,36 @@ class CategoriaModel extends CI_Model
 
     public function Inserir($categoria)
     {
+        $this->db->trans_begin();
+       
         $resultado = $this->db->insert('categoria',  $categoria);
-        return isset($resultado);
+       
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            $this->db->trans_commit();
+            return true;
+        }
     }
 
     public function Alterar($id, $categoria)
     {
+        $this->db->trans_complete();
+
         $resultado = $this->db->update('categoria',  $categoria, array('id' => $id));
-        return isset($resultado);
+        
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            $this->db->trans_commit();
+            return true;
+        }
     }
 
     public function Remover($id)
@@ -31,6 +53,7 @@ class CategoriaModel extends CI_Model
     {
         $this->db->select('id, nome');
         $this->db->from('categoria');
+        $this->db->order_by('nome');
         $query = $this->db->get();
         return $query->result();
     }
