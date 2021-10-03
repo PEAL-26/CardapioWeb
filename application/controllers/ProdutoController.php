@@ -1,5 +1,5 @@
 <?php
-class produtoController extends CI_Controller
+class ProdutoController extends CI_Controller
 {
     public function __construct()
     {
@@ -15,7 +15,7 @@ class produtoController extends CI_Controller
         $dados['titulo'] = 'Produtos';
         $dados['sub_titulo'] = 'Listagem';
         $dados['produtos'] = $this->ProdutoModel->ListarTodos();
-        $this->load->view('produtos/index', $dados);
+        $this->load->view('admin/produtos/index', $dados);
     }
 
     public function FiltrarProduto()
@@ -38,7 +38,7 @@ class produtoController extends CI_Controller
             return;
         }
 
-        $this->load->view('produtos/details', $dados);
+        $this->load->view('admin/produtos/details', $dados);
     }
 
     public function Create()
@@ -53,7 +53,7 @@ class produtoController extends CI_Controller
         $this->form_validation->set_rules('valor', 'Valor', 'required');
 
         if ($this->form_validation->run() === FALSE) {
-            $this->load->view('produtos/create', $dados);
+            $this->load->view('admin/produtos/create', $dados);
         } else {
 
             $carregar_imagem = $this->UploadImage();
@@ -73,9 +73,9 @@ class produtoController extends CI_Controller
             }
 
             if ($resultado) {
-                redirect('produto');
+                redirect('admin/produto');
             } else {
-                $this->load->view('produtos/create',  $dados);
+                $this->load->view('admin/produtos/create',  $dados);
             }
             
         }
@@ -113,7 +113,7 @@ class produtoController extends CI_Controller
         $this->form_validation->set_rules('valor', 'Valor', 'required');
 
         if ($this->form_validation->run() === FALSE) {
-            $this->load->view('produtos/edit', $dados);
+            $this->load->view('admin/produtos/edit', $dados);
         } else {
             $carregar_imagem = $this->UploadImage();
             if ($carregar_imagem["sucess"]){ 
@@ -140,9 +140,9 @@ class produtoController extends CI_Controller
             }
 
             if ($resultado) {
-                redirect('produto');
+                redirect('admin/produto');
             } else {
-                $this->load->view('produtos/create',  $dados);
+                $this->load->view('admin/produtos/create',  $dados);
             }          
         }
     }
@@ -151,7 +151,7 @@ class produtoController extends CI_Controller
     {
         $resultado = $this->ProdutoModel->Remover($id);
         if ($resultado) {
-            redirect('produto', 'refresh');
+            redirect('admin/produto', 'refresh');
         } else {
         }
     }

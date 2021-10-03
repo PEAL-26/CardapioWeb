@@ -55,15 +55,15 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['home'] = 'HomeController/index';
 
-$route['categoria'] = 'CategoriaController/index';
-$route['categoria/create'] = 'CategoriaController/create';
-$route['categoria/edit/(:num)'] = 'CategoriaController/edit/$1';
-$route['categoria/details/(:num)'] = 'CategoriaController/details/$1';
-$route['categoria/delete/(:num)'] = 'CategoriaController/delete/$1';
+$route['admin/categoria'] = 'CategoriaController/index';
+$route['admin/categoria/create'] = 'CategoriaController/create';
+$route['admin/categoria/edit/(:num)'] = 'CategoriaController/edit/$1';
+$route['admin/categoria/details/(:num)'] = 'CategoriaController/details/$1';
+$route['admin/categoria/delete/(:num)'] = 'CategoriaController/delete/$1';
 
-$route['produto'] = 'ProdutoController/index';
-$route['produto/create'] = 'ProdutoController/create';
-$route['produto/edit/(:num)'] = 'ProdutoController/edit/$1';
-$route['produto/details/(:num)'] = 'ProdutoController/details/$1';
-$route['produto/delete/(:num)'] = 'ProdutoController/delete/$1';
-$route['produto/filtrar'] = 'ProdutoController/FiltrarProduto';
+$route['admin/produto'] = 'ProdutoController/index';
+$route['admin/produto/create'] = 'ProdutoController/create';
+$route['admin/produto/edit/(:num)'] = 'ProdutoController/edit/$1';
+$route['admin/produto/details/(:num)'] = 'ProdutoController/details/$1';
+$route['admin/produto/delete/(:num)'] = 'ProdutoController/delete/$1';
+$route['admin/produto/filtrar'] = 'ProdutoController/FiltrarProduto';

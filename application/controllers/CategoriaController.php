@@ -14,7 +14,7 @@ class CategoriaController extends CI_Controller
         $dados['titulo'] = 'Categorias';
         $dados['sub_titulo'] = 'Listagem';
         $dados['categorias'] = $this->CategoriaModel->ListarTodos();
-        $this->load->view('categorias/index', $dados);
+        $this->load->view('admin/admin/categorias/index', $dados);
     }
 
     public function Details($id)
@@ -30,7 +30,7 @@ class CategoriaController extends CI_Controller
             return;
         }
 
-        $this->load->view('categorias/details', $dados);
+        $this->load->view('admin/categorias/details', $dados);
     }
 
     public function Create()
@@ -39,7 +39,7 @@ class CategoriaController extends CI_Controller
         $dados['sub_titulo'] = 'Cadastrar';
         $this->form_validation->set_rules('nome', 'Nome', 'required');
         if ($this->form_validation->run() === FALSE) {
-            $this->load->view('categorias/create', $dados);
+            $this->load->view('admin/categorias/create', $dados);
         } else {
             $categoria = array(
                 "nome" => $this->input->post('nome')
@@ -48,9 +48,9 @@ class CategoriaController extends CI_Controller
             $resultado = $this->CategoriaModel->Inserir($categoria);
 
             if ($resultado) {
-                redirect('categoria');
+                redirect('admin/categoria');
             } else {
-                $this->load->view('categorias/create',  $dados);
+                $this->load->view('admin/categorias/create',  $dados);
             }
         }
     }
@@ -63,7 +63,7 @@ class CategoriaController extends CI_Controller
 
         $this->form_validation->set_rules('nome', 'Nome', 'required');
         if ($this->form_validation->run() === FALSE) {
-            $this->load->view('categorias/edit', $dados);
+            $this->load->view('admin/categorias/edit', $dados);
         } else {
             
             $categoria = array(
@@ -81,9 +81,9 @@ class CategoriaController extends CI_Controller
             $resultado = $this->CategoriaModel->Alterar($id, $categoria);
 
             if ($resultado) {
-                redirect('categoria');
+                redirect('admin/categoria');
             } else {
-                $this->load->view('categorias/edit',  $dados);
+                $this->load->view('admin/categorias/edit',  $dados);
             }
         }
     }
@@ -92,7 +92,7 @@ class CategoriaController extends CI_Controller
     {
         $resultado = $this->CategoriaModel->Remover($id);
         if ($resultado) {
-            redirect('categoria', 'refresh');
+            redirect('admin/categoria', 'refresh');
         } else {
         }
     }

@@ -121,6 +121,7 @@
 
         $.post(url, dados, function(response) {
             $("#lista-produtos").empty();
+            $('._menu').show();
             var resultado = JSON.parse(response),
                 ultima_categoria = '';
             if (resultado && resultado.length > 0) {
@@ -143,6 +144,7 @@
                 });
             } else {
                 $('#lista-produtos').html('<h5 class="header col s12 light center"> Não encontramos nenhum resultado para a sua busca.</h5>')
+                $('._menu').hide();
             }
         });
     }

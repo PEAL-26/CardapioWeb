@@ -26,14 +26,14 @@
       <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="<?php echo site_url('home'); ?>">Home</a></li>
-        <li><a href="<?php echo site_url('produto'); ?>">Produtos</a></li>
-        <li><a href="<?php echo site_url('categoria'); ?>">Categorias</a></li>
+        <li><a href="<?php echo site_url('admin/produto'); ?>">Produtos</a></li>
+        <li><a href="<?php echo site_url('admin/categoria'); ?>">Categorias</a></li>
       </ul>
     </div>
   </nav>
 
   <ul class="sidenav" id="mobile-menu">
     <li><a href="<?php echo site_url('home'); ?>">Home</a></li>
-    <li><a href="<?php echo site_url('produto'); ?>">Produtos</a></li>
-    <li><a href="<?php echo site_url('categoria'); ?>">Categorias</a></li>
+    <li><a href="<?php echo site_url('admin/produto'); ?>">Produtos</a></li>
+    <li><a href="<?php echo site_url('admin/categoria'); ?>">Categorias</a></li>
   </ul>

@@ -23,7 +23,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost:60/cardapioweb/';
+$config['base_url'] = 'https://5ba6-154-127-215-116.ngrok.io/cardapioweb/'; //'http://localhost:60/cardapioweb/';
 
 /*
 |--------------------------------------------------------------------------
