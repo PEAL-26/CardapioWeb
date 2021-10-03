@@ -37,6 +37,18 @@ class ProdutoModel extends CI_Model
         return $query->result();
     }
 
+    public function Listar($filtro)
+    {
+        $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');
+        $this->db->from('produto p ');
+        $this->db->join('categoria c', 'c.id = p.categoria_id');
+        $this->db->like('p.nome', $filtro);
+        $this->db->or_like('c.nome',  $filtro);
+        $this->db->order_by('c.Nome, p.nome');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function BuscarPorId($id)
     {
         $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');

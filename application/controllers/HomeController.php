@@ -12,7 +12,7 @@ class HomeController extends CI_Controller
     {
         $dados['titulo'] = 'Home';
         $dados['sub_titulo'] = 'Dashboard';
-        $dados['produtos'] = $this->ProdutoModel->ListarTodos();
+        // $dados['produtos'] = $this->ProdutoModel->ListarTodos();
         $dados['categorias'] = $this->CategoriaModel->ListarTodos();
         $this->load->view('home/index', $dados);
     }

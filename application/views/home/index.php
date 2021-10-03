@@ -1,83 +1,48 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <?php $this->load->view('_layout/header'); ?>
 
-<!-- <div class="row">
+<div>
+    <div class="meunu-pesquisa">
+        <!-- Barra de Pesquisa -->
+        <!-- <nav class="pesquisar"> -->
+        <div class="nav-wrapper pesquisar">
+            <div class="input-field">
+                <input id="search" class="" type="search" placeholder="Pesquisar">
+                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                <i id="close-search" class="material-icons">close</i>
+            </div>
+        </div>
+        <!-- </nav> -->
 
-    <nav class="menu navbar-fixed">
-        <div class="nav-wrapper">
-
-            <form>
-                <div class="input-field">
-                    <input id="search" type="search">
-                    <label class="label-icon" for="search"><i class=" material-icons">search</i></label>
-                    <i class="material-icons">close</i>
-                </div>
-            </form> -->
-
-<!-- Categorias -->
-<!-- <div class="wrapper menu-categorias">
-                <div class="nav-wrapper">
-                    <ul class="lista-categoria center-align "> -->
-<!-- table-of-contents -->
-<!-- <?php foreach ($categorias as $categoria) : ?>
-                            <li><a href="#<?= $categoria->nome ?>"><?= $categoria->nome ?></a></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
+        <!-- Menu de Categorias -->
+        <div class="_menu  grey lighten-2">
+            <div class="_menu-content">
+                <?php $count = 0; ?>
+                <?php foreach ($categorias as $categoria) : ?>
+                    <div class="_item <?php if (++$count == 1) echo 'active'; ?>"><a href="#<?= $categoria->nome; ?>"><?= $categoria->nome; ?></a></div>
+                <?php endforeach; ?>
             </div>
 
-           
-        </div>
-    </nav>
-
-</div> -->
-<div class="pesquisar navbar-fixed pinned">
-    <nav>
-        <div class="nav-wrapper grey lighten-4">
-            <form>
-                <div class="input-field">
-                    <input id="search" class="" type="search" >
-                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                    <i class="material-icons">close</i>
-                </div>
-            </form>
-        </div>
-    </nav>
-</div>
-
-<div class="section no-pad-bot">
-    <div class="container">
-
-        <!-- Lista de Produtos Por Categoria-->
-        <?php $ultima_categoria = ""; ?>
-        <?php foreach ($produtos as $produto) : ?>
-
-            <div class="row scrollspy lista-produtos" id="<?php if ($ultima_categoria != $produto->categoria) echo $produto->categoria; ?>">
-                <div class="col s12">
-                    <div class="row">
-                        <h5><?php if ($ultima_categoria != $produto->categoria) echo $produto->categoria;  ?></h5>
-                    </div>
-
-                    <div class="row produto-card card-panel small" data-id="<?= $produto->id ?>">
-                        <div class="col s6">
-                            <h5 class="nome grey-text text-darken-4"><?= $produto->nome ?></h5>
-                            <p class="descricao" align="justify"><?= $produto->descricao ?></p>
-                            <h5 class="valor">R$ <?= $produto->valor ?></h5>
-                        </div>
-                        <div class="col s6">
-                            <!-- <div class="card-image waves-effect waves-block waves-light"> -->
-                            <img class="responsive-img imagem" src="<?= base_url($produto->imagem) ?>" alt="<?= $produto->nome ?>">
-                            <!-- </div> -->
-                        </div>
-                    </div>
-                </div>
+            <div class="_botao _left hide-on-small-only">
+                <a class="scrollLeft" href="#"><strong><i class="material-icons">arrow_back</i></strong></a>
             </div>
+            <div class="_botao _right hide-on-small-only">
+                <a class="scrollRight" href="#"><strong><i class="material-icons">arrow_forward</i></strong></a>
+            </div>
+        </div>
+    </div>
 
-            <?php $ultima_categoria = $produto->categoria; ?>
-        <?php endforeach; ?>
-
+    <div class="section no-pad">
+        <div class="conteudo-principal">
+            <!-- Lista de Produtos Por Categoria-->
+            <div id="lista-produtos" class="container no-pad"> </div>
+        </div>
     </div>
 </div>
+
+<?php $this->load->view('_layout/footer_start'); ?>
+<script src="<?php echo base_url("assets/js/simplebar.min.js"); ?>"></script>
+<script src="<?php echo base_url("assets/js/scrollbuttom.js"); ?>"></script>
 
 <!-- Modal -->
 <div id="modal1" class="modal">
@@ -96,35 +61,95 @@
     </div>
 </div>
 
-<?php $this->load->view('_layout/footer_start'); ?>
+<!-- Tamplate Mustache - Lista de Produtos -->
+<script id="tamplate-lista-produtos" type="text/template">
+    <div class="row lista-produtos section scrollspy" id="{{categoria}}">
+            <div class="col s12">
+                    {{#categoria}}
+                    <div class="row "  >
+                        <h5 class="header col s12 light">{{categoria}}</h5>
+                    </div> 
+                    {{/categoria}}
+                 
+                    <div class="row produto-card" data-id="{{id}}">
+                        <div class="col s6">
+                            <h5 class="nome grey-text text-darken-4">{{nome}}</h5>
+                            <p class="descricao" align="justify">{{descricao}}</p>
+                            <h5 class="valor">R$ {{valor}}</h5>
+                        </div>
+                        <div class="col s6">
+                            <div class="waves-effect waves-block waves-light imagem" >
+                                <img class="img" src="{{imagem}}">
+                            </div>
+                        </div>
+                    </div> 
+            </div>
+    </div>        
+</script>
+
 <script type="text/javascript">
+  
     $(document).ready(function() {
-        $('.carousel').carousel();
         $('.modal').modal();
         $('.scrollspy').scrollSpy();
-
-        $barraMenu = $('.menu');
-        $categoria = $('.wrapper');
-
-        $categoria.pushpin({
-            top: 700
-        });
-
-        console.log($categoria);
-
+        filtrar_produto();
     }).on('click', '.imagem', function() {
         var target = $(this).closest('[data-id]'),
             nome = $(target).find('.nome').html(),
             descricao = $(target).find('.descricao').html(),
             valor = $(target).find('.valor').html(),
-            imagem = $(this).attr('src');
+            imagem = $(target).find('img').attr('src');
 
         $('#modal-nome').html(nome);
         $('#modal-descricao').html(descricao);
         $('#modal-valor').html(valor);
-        $("#modal-imagem").attr('src', imagem);
+        $('#modal-imagem').attr('src', imagem);
         var instance = M.Modal.getInstance($('.modal'));
         instance.open();
+    }).on('input', '#search', function() {
+        filtrar_produto();
+    }).on('click', '#close-search', function() {
+        $('#search').val('');
+        filtrar_produto();
     });
+
+    function filtrar_produto() {
+        var url = '<?php echo site_url('produto/filtrar'); ?>',
+            dados = {
+                filtro: $('#search').val()
+            };
+
+        $.post(url, dados, function(response) {
+            $("#lista-produtos").empty();
+            var resultado = JSON.parse(response),
+                ultima_categoria = '';
+            if (resultado && resultado.length > 0) {
+                $.each(JSON.parse(response), function(index, value) {
+                    if (ultima_categoria != value.categoria)
+                        ultima_categoria = value.categoria;
+                    else
+                        ultima_categoria = false;
+
+                    InserirDadosNaLista({
+                        id: value.id,
+                        ancora: ultima_categoria,
+                        categoria: ultima_categoria,
+                        nome: value.nome,
+                        descricao: value.descricao,
+                        valor: value.valor,
+                        imagem: '<?= base_url() ?>' + value.imagem
+                    });
+
+                });
+            } else {
+                $('#lista-produtos').html('<h5 class="header col s12 light center"> Não encontramos nenhum resultado para a sua busca.</h5>')
+            }
+        });
+    }
+
+    function InserirDadosNaLista(dados) {
+        var template = document.getElementById('tamplate-lista-produtos').innerHTML;
+        $('#lista-produtos').append(Mustache.render(template, dados));
+    }
 </script>
 <?php $this->load->view('_layout/footer_end'); ?>

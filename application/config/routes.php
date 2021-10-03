@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -66,3 +66,4 @@ $route['produto/create'] = 'ProdutoController/create';
 $route['produto/edit/(:num)'] = 'ProdutoController/edit/$1';
 $route['produto/details/(:num)'] = 'ProdutoController/details/$1';
 $route['produto/delete/(:num)'] = 'ProdutoController/delete/$1';
+$route['produto/filtrar'] = 'ProdutoController/FiltrarProduto';

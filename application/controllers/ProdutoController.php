@@ -18,6 +18,13 @@ class produtoController extends CI_Controller
         $this->load->view('produtos/index', $dados);
     }
 
+    public function FiltrarProduto()
+    {
+        $filtro  = $this->input->post('filtro') ?? '';
+        $dados['produtos'] = $this->ProdutoModel->Listar($filtro);
+        echo json_encode($dados["produtos"]);
+    }
+
     public function Details($id)
     {
         $dados['titulo'] = 'Produto';

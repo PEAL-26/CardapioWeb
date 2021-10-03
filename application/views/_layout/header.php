@@ -8,6 +8,7 @@
   <link href="<?php echo base_url("assets/css/material.icons.css"); ?>" rel="stylesheet">
   <link type="text/css" rel="stylesheet" href="<?php echo base_url("assets/css/materialize.min.css"); ?>" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="<?php echo base_url("assets/css/sweetalert2.min.css"); ?>" media="screen,projection" />
+  <link type="text/css" rel="stylesheet" href="<?php echo base_url("assets/css/simplebar.css"); ?>" media="screen,projection" />
   <link type="text/css" rel="stylesheet" href="<?php echo base_url("assets/css/custom.css"); ?>" media="screen,projection" />
 
   <title>Cardápio Web</title>
@@ -21,7 +22,7 @@
 
   <nav class="menu navbar-fixed">
     <div class="nav-wrapper">
-      <a href="<?php echo site_url('home'); ?>" class="brand-logo">Cardápio Web</a>
+      <a href="<?php echo site_url('home'); ?>" class="header">Cardápio Web</a>
       <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="<?php echo site_url('home'); ?>">Home</a></li>
