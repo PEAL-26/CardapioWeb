@@ -32,7 +32,7 @@
 
             <div class="row">
                 <div class="input-field col s6">
-                    <textarea id="descricao" name="descricao" class="materialize-textarea" row="3"></textarea>
+                    <textarea id="descricao" name="descricao" class="materialize-textarea" row="3"><?php echo set_value('descricao'); ?></textarea>
                     <label for="descricao">Descrição</label>
                     <?php echo form_error('descricao', '<div class="red-text">', '</div>'); ?>
                 </div>
@@ -53,7 +53,7 @@
                         <input type="file" name="imagem">
                     </div>
                     <div class="file-path-wrapper">
-                        <input name="nome_imagem" placeholder="Localizar imagem" class="file-path validate" type="text">
+                        <input name="nome_imagem" value="<?php echo set_value('nome_imagem'); ?>" placeholder="Localizar imagem" class="file-path validate" type="text">
                     </div>
                     <?php echo form_error('imagem', '<div class="red-text">', '</div>'); ?>
                 </div>

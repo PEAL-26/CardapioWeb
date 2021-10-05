@@ -7,7 +7,7 @@
         <div class="row">
             <div class="section">
                 <h5><?= $titulo . ' - ' . $sub_titulo; ?>
-                    <a class="right btn-floating btn waves-effect waves-light red" href="<?php echo site_url('categoria/create') ?> "><i class="material-icons">add</i></a>
+                    <a class="right btn-floating btn waves-effect waves-light red" href="<?php echo site_url('usuario/create') ?> "><i class="material-icons">add</i></a>
                 </h5>
             </div>
 
@@ -15,19 +15,21 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Email</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($categorias as $categoria) : ?>
+                    <?php foreach ($usuarios as $usuario) : ?>
                         <tr>
-                            <td><?php echo  $categoria->nome ?></td>
+                            <td><?php echo  $usuario->nome ?></td>
+                            <td><?php echo  $usuario->email ?></td>
                             <td class="right">
-                                <a href="<?php echo site_url('categoria/details/' . $categoria->id) ?>">
+                                <a href="<?php echo site_url('usuario/details/' . $usuario->id) ?>">
                                     <i class="material-icons">remove_red_eye</i></a>
-                                <a href="<?php echo site_url('categoria/edit/' . $categoria->id) ?>">
+                                <a href="<?php echo site_url('usuario/edit/' . $usuario->id) ?>">
                                     <i class="material-icons">edit</i></a>
-                                <a href="javascript:Delete('<?php echo site_url('categoria/delete/' . $categoria->id) ?>')">
+                                <a href="javascript:Delete('<?php echo site_url('usuario/delete/' . $usuario->id) ?>')">
                                     <i class="material-icons">delete</i></a>
                             </td>
                         </tr>

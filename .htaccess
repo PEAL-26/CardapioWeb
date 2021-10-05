@@ -1,6 +1,11 @@
-RewriteEngine On
+# RewriteEngine On
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule ^(.*)$ index.php/$1 [L]
+# RewriteRule ^(home(/index)?|index(\.php)?)/?$ / [L,R=301]
+# RewriteRule ^(.*)/index/?$ $1 [L,R=301]
+
+RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php/$1 [L]
-RewriteRule ^(home(/index)?|index(\.php)?)/?$ / [L,R=301]
-RewriteRule ^(.*)/index/?$ $1 [L,R=301]
+RewriteRule ^(.*)$ index.php/$1 [L,QSA]

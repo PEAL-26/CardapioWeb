@@ -22,16 +22,16 @@
 }
 
 .descricao {
-    float: left;
-    color: #666666;
-    width: 100%;
+    /* float: left; */
+    /* color: #666666; */
+    /* width: 100%; */
     font-family: Candara, Trebuchet MS, sans-serif;
     font-size: 12px;
-    font-weight: bold;
+    /* font-weight: bold; */
     border-right: thin dotted #666666;
-    line-height: 18px;
-    max-height: 80px;
-    overflow: auto;
+    /* line-height: 18px; */
+    max-height: 90px;
+    overflow-y: auto;
 }
 
 .produto-card {

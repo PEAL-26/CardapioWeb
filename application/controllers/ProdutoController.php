@@ -11,7 +11,8 @@ class ProdutoController extends CI_Controller
     }
 
     public function Index()
-    {
+    {        
+        if(!Permissao()) return;
         $dados['titulo'] = 'Produtos';
         $dados['sub_titulo'] = 'Listagem';
         $dados['produtos'] = $this->ProdutoModel->ListarTodos();
@@ -27,6 +28,7 @@ class ProdutoController extends CI_Controller
 
     public function Details($id)
     {
+        if(!Permissao()) return;
         $dados['titulo'] = 'Produto';
         $dados['sub_titulo'] = 'Detalhes';
         $dados['produto']  = $this->ProdutoModel->BuscarPorId($id);
@@ -43,6 +45,7 @@ class ProdutoController extends CI_Controller
 
     public function Create()
     {
+        if(!Permissao()) return;
         $dados['titulo'] = 'Produto';
         $dados['sub_titulo'] = 'Cadastrar';
         $dados['msg'] = '';
@@ -50,7 +53,7 @@ class ProdutoController extends CI_Controller
 
         $this->form_validation->set_rules('nome', 'Nome', 'required');
         $this->form_validation->set_rules('categoria_id', 'Categoria', 'required');
-        $this->form_validation->set_rules('valor', 'Valor', 'required');
+        $this->form_validation->set_rules('valor', 'Valor', 'required|is_numeric');
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('admin/produtos/create', $dados);
@@ -71,9 +74,9 @@ class ProdutoController extends CI_Controller
                 $resultado = FALSE;
                 $dados['msg'] = $carregar_imagem["resultado"];
             }
-
+            
             if ($resultado) {
-                redirect('admin/produto');
+                redirect('produto');
             } else {
                 $this->load->view('admin/produtos/create',  $dados);
             }
@@ -83,6 +86,7 @@ class ProdutoController extends CI_Controller
 
     private function UploadImage()
     {
+        if(!Permissao()) return;
         $imagem_selecionada = $this->input->post('nome_imagem');
         if (empty($imagem_selecionada))
             return array("sucess" => TRUE, "resultado" => '');
@@ -103,6 +107,7 @@ class ProdutoController extends CI_Controller
 
     public function Edit($id)
     {
+       if(!Permissao()) return;
         $dados['titulo'] = 'Produto';
         $dados['sub_titulo'] = 'Editar';
         $dados['produto']  = $this->ProdutoModel->BuscarPorId($id);
@@ -110,7 +115,7 @@ class ProdutoController extends CI_Controller
 
         $this->form_validation->set_rules('nome', 'Nome', 'required');
         $this->form_validation->set_rules('categoria_id', 'Categoria', 'required');
-        $this->form_validation->set_rules('valor', 'Valor', 'required');
+        $this->form_validation->set_rules('valor', 'Valor', 'required|is_numeric');
 
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('admin/produtos/edit', $dados);
@@ -139,8 +144,12 @@ class ProdutoController extends CI_Controller
                 $dados['msg'] = $carregar_imagem["resultado"];
             }
 
+            echo '<pre>';
+            print_r($resultado);
+            echo '</pre>';
+
             if ($resultado) {
-                redirect('admin/produto');
+                redirect('produto');
             } else {
                 $this->load->view('admin/produtos/create',  $dados);
             }          
@@ -149,9 +158,10 @@ class ProdutoController extends CI_Controller
 
     public function Delete($id)
     {
+        if(!Permissao()) return;
         $resultado = $this->ProdutoModel->Remover($id);
         if ($resultado) {
-            redirect('admin/produto', 'refresh');
+            redirect('produto', 'refresh');
         } else {
         }
     }

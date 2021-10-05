@@ -16,7 +16,7 @@
 
         <!-- Menu de Categorias -->
         <div class="_menu  grey lighten-2">
-            <div class="_menu-content">
+            <div class="_menu-content table-of-contents">
                 <?php $count = 0; ?>
                 <?php foreach ($categorias as $categoria) : ?>
                     <div class="_item <?php if (++$count == 1) echo 'active'; ?>"><a href="#<?= $categoria->nome; ?>"><?= $categoria->nome; ?></a></div>
@@ -24,10 +24,10 @@
             </div>
 
             <div class="_botao _left hide-on-small-only">
-                <a class="scrollLeft" href="#"><strong><i class="material-icons">arrow_back</i></strong></a>
+                <a class="scrollLeft" href="#"><strong><i class="material-icons red-text">arrow_back</i></strong></a>
             </div>
             <div class="_botao _right hide-on-small-only">
-                <a class="scrollRight" href="#"><strong><i class="material-icons">arrow_forward</i></strong></a>
+                <a class="scrollRight" href="#"><strong><i class="material-icons red-text">arrow_forward</i></strong></a>
             </div>
         </div>
     </div>

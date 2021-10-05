@@ -22,18 +22,33 @@
 
   <nav class="menu navbar-fixed">
     <div class="nav-wrapper">
-      <a href="<?php echo site_url('home'); ?>" class="header">Cardápio Web</a>
+      <a href="<?php echo site_url('/'); ?>" class="header">Cardápio Web</a>
       <a href="#" data-target="mobile-menu" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="<?php echo site_url('home'); ?>">Home</a></li>
-        <li><a href="<?php echo site_url('admin/produto'); ?>">Produtos</a></li>
-        <li><a href="<?php echo site_url('admin/categoria'); ?>">Categorias</a></li>
+        <li><a href="<?php echo site_url('/'); ?>">Home</a></li>
+        <?php if ($this->session->userdata('usuario_logado')) : ?>
+          <li><a href="<?php echo site_url('produto'); ?>">Produtos</a></li>
+          <li><a href="<?php echo site_url('categoria'); ?>">Categorias</a></li>
+          <li><a href="<?php echo site_url('usuario'); ?>">Usuarios</a></li>
+          <li><a href="<?php echo site_url('sair'); ?>">Sair</a></li>
+        <?php else : ?>
+          <li><a href="<?php echo site_url('login'); ?>">Entrar</a></li>
+        <?php endif; ?>
+
       </ul>
     </div>
   </nav>
 
   <ul class="sidenav" id="mobile-menu">
-    <li><a href="<?php echo site_url('home'); ?>">Home</a></li>
-    <li><a href="<?php echo site_url('admin/produto'); ?>">Produtos</a></li>
-    <li><a href="<?php echo site_url('admin/categoria'); ?>">Categorias</a></li>
+
+    <li><a href="<?php echo site_url('/'); ?>">Home</a></li>
+    <?php if ($this->session->userdata('usuario_logado')) : ?>
+      <li><a href="<?php echo site_url('produto'); ?>">Produtos</a></li>
+      <li><a href="<?php echo site_url('categoria'); ?>">Categorias</a></li>
+      <li><a href="<?php echo site_url('usuario'); ?>">Usuarios</a></li>
+      <li><a href="<?php echo site_url('sair'); ?>">Sair</a></li>
+    <?php else : ?>
+      <li><a href="<?php echo site_url('login'); ?>">Entrar</a></li>
+    <?php endif; ?>
+
   </ul>

@@ -4,126 +4,150 @@ class UsuarioController extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+       
         $this->load->model('UsuarioModel');
         $this->load->helper('form');
         $this->load->library('form_validation');
     }
 
     public function Index()
-    {
-        $dados['titulo'] = 'Produtos';
+    { 
+        if(!Permissao()) return;
+        $dados['titulo'] = 'Usuários';
         $dados['sub_titulo'] = 'Listagem';
-        $dados['produtos'] = $this->ProdutoModel->ListarTodos();
-        $this->load->view('admin/produtos/index', $dados);
+        $dados['usuarios'] = $this->UsuarioModel->ListarTodos();
+        $this->load->view('admin/usuarios/index', $dados);
     }
 
     public function Details($id)
     {
-        $dados['titulo'] = 'Produto';
+        if(!Permissao()) return;
+        $dados['titulo'] = 'Usuario';
         $dados['sub_titulo'] = 'Detalhes';
-        $dados['produto']  = $this->ProdutoModel->BuscarPorId($id);
+        $dados['usuario']  = $this->UsuarioModel->BuscarPorId($id);
 
-        if ($dados['produto'] == null) {
+        if ($dados['usuario'] == null) {
             $erro["heading"] = "Erro!";
-            $erro["message"] = "Produto não econtrada.";
+            $erro["message"] = "Usuario não econtrada.";
             $this->load->view('errors/html/error_404',  $erro);
             return;
         }
 
-        $this->load->view('admin/produtos/details', $dados);
+        $this->load->view('admin/usuarios/details', $dados);
     }
 
-    // public function Create()
-    // {
-    //     $dados['titulo'] = 'Produto';
-    //     $dados['sub_titulo'] = 'Cadastrar';
-    //     $dados['msg'] = '';
-    //     $dados['categorias'] = $this->CategoriaModel->ListarTodos();
+    public function Create()
+    {
+        if(!Permissao()) return;
+        $dados['titulo'] = 'Usuario';
+        $dados['sub_titulo'] = 'Cadastrar';
+        $dados['msg'] = '';
 
-    //     $this->form_validation->set_rules('nome', 'Nome', 'required');
-    //     $this->form_validation->set_rules('categoria_id', 'Categoria', 'required');
-    //     $this->form_validation->set_rules('valor', 'Valor', 'required');
+        $this->form_validation->set_rules('nome', 'Nome', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('senha', 'Senha', 'required');
+        $this->form_validation->set_rules('senha_repetir', 'Repetir Senha', 'required');
 
-    //     if ($this->form_validation->run() === FALSE) {
-    //         $this->load->view('admin/produtos/create', $dados);
-    //     } else {
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('admin/usuarios/create', $dados);
+        } else {
+            $senha = $this->input->post('senha');
+            $repetir = $this->input->post('senha_repetir');
 
-    //         $carregar_imagem = $this->UploadImage();
-    //         if ($carregar_imagem["sucess"]){ 
-    //             $produto = array(
-    //                 "categoria_id" => $this->input->post('categoria_id'),
-    //                 "nome" => $this->input->post('nome'),
-    //                 "descricao" => $this->input->post('descricao'),
-    //                 "valor" => $this->input->post('valor'),
-    //                 "imagem" =>  $carregar_imagem["resultado"]
-    //             );
-        
-    //             $resultado = $this->ProdutoModel->Inserir($produto);
-    //         }else{
-    //             $resultado = FALSE;
-    //             $dados['msg'] = $carregar_imagem["resultado"];
-    //         }
+            if ($this->VerificarSenha($senha, $repetir)) {
+                $usuario = array(
+                    "email" => $this->input->post('email'),
+                    "nome" => $this->input->post('nome'),
+                    "senha" => password_hash($this->input->post('senha'), PASSWORD_DEFAULT)
+                );
 
-    //         if ($resultado) {
-    //             redirect('admin/produto');
-    //         } else {
-    //             $this->load->view('admin/produtos/create',  $dados);
-    //         }
-            
-    //     }
-    // }
+                $verificar = $this->UsuarioModel->BuscarPorEmail($usuario["email"]);
+                if ($verificar != null) $dados['msg'] .= '\\nEsse email já foi cadastrado.';
 
-    // public function Edit($id)
-    // {
-    //     $dados['titulo'] = 'Produto';
-    //     $dados['sub_titulo'] = 'Editar';
-    //     $dados['produto']  = $this->ProdutoModel->BuscarPorId($id);
-    //     $dados['categorias'] = $this->CategoriaModel->ListarTodos();
+                $resultado = false;
+            } else {
+                $resultado = false;
+                $dados['msg'] .= '\\nSenhas diferentes.';
+            }
 
-    //     $this->form_validation->set_rules('nome', 'Nome', 'required');
-    //     $this->form_validation->set_rules('categoria_id', 'Categoria', 'required');
-    //     $this->form_validation->set_rules('valor', 'Valor', 'required');
+            if ($dados['msg'] = '')
+                $resultado = $this->UsuarioModel->Inserir($usuario);
 
-    //     if ($this->form_validation->run() === FALSE) {
-    //         $this->load->view('admin/produtos/edit', $dados);
-    //     } else {
-    //         $carregar_imagem = $this->UploadImage();
-    //         if ($carregar_imagem["sucess"]){ 
-    //             $produto = array(
-    //                 "id" => $this->input->post('id'),
-    //                 "categoria_id" => $this->input->post('categoria_id'),
-    //                 "nome" => $this->input->post('nome'),
-    //                 "descricao" => $this->input->post('descricao'),
-    //                 "valor" => $this->input->post('valor'),
-    //                 "imagem" =>  $carregar_imagem["resultado"]
-    //             );
-        
-    //             if ($dados['produto'] == null || $id != $produto["id"]) {
-    //                 $erro["heading"] = "Erro!";
-    //                 $erro["message"] = "Produto não econtrada.";
-    //                 $this->load->view('errors/html/error_404',  $erro);
-    //                 return;
-    //             }
+            if ($resultado) {
+                redirect('usuario');
+            } else {
+                $this->load->view('admin/usuarios/create',  $dados);
+            }
+        }
+    }
 
-    //              $resultado = $this->ProdutoModel->Alterar($id, $produto);
-    //         }else{
-    //             $resultado = FALSE;
-    //             $dados['msg'] = $carregar_imagem["resultado"];
-    //         }
+    private function VerificarSenha($senha, $repetir)
+    {
+        if(!Permissao()) return;
+        if ($senha != $repetir) {
+            return FALSE;
+        }
 
-    //         if ($resultado) {
-    //             redirect('admin/produto');
-    //         } else {
-    //             $this->load->view('admin/produtos/create',  $dados);
-    //         }          
-    //     }
-    // }
+        return TRUE;
+    }
+    public function Edit($id)
+    {
+        if(!Permissao()) return;
+        $dados['titulo'] = 'Usuario';
+        $dados['sub_titulo'] = 'Editar';
+        $dados['msg'] = '';
+        $dados['usuario']  = $this->UsuarioModel->BuscarPorId($id);
+
+        $this->form_validation->set_rules('nome', 'Nome', 'required');
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('senha_antiga', 'Senha Antiga', 'required');
+        $this->form_validation->set_rules('senha_nova', 'Senha Nova', 'required');
+        $this->form_validation->set_rules('senha_nova_repetir', 'Repetir Nova Senha', 'required');
+
+        if ($this->form_validation->run() === FALSE) {
+            $this->load->view('admin/usuarios/edit', $dados);
+        } else {
+            $senha = $this->input->post('senha_nova');
+            $repetir = $this->input->post('senha_nova_repetir');
+
+            if ($this->VerificarSenha($senha, $repetir)) {
+                $usuario = array(
+                    "email" => $this->input->post('email'),
+                    "nome" => $this->input->post('nome'),
+                    "senha" => password_hash($this->input->post('senha'), PASSWORD_DEFAULT)
+                );
+
+                if ($dados['usuario'] == null || $id != $usuario["id"]) {
+                    $erro["heading"] = "Erro!";
+                    $erro["message"] = "Usuario não econtrado.";
+                    $this->load->view('errors/html/error_404',  $erro);
+                    return;
+                }
+
+                $verificar = $this->UsuarioModel->BuscarPorEmail($usuario["email"]);
+                if ($verificar != null && $verificar != $id) $dados['msg'] .= '\\nEsse email já foi cadastrado.';
+            } else {
+                $resultado = false;
+                $dados['msg'] .= '\\nSenhas diferentes.';
+            }
+
+            if ($dados['msg'] = '')
+                $resultado = $this->UsuarioModel->Alterar($id, $usuario);
+
+            if ($resultado) {
+                redirect('usuario');
+            } else {
+                $this->load->view('admin/usuarios/create',  $dados);
+            }
+        }
+    }
 
     public function Delete($id)
     {
-        $resultado = $this->ProdutoModel->Remover($id);
+        if(!Permissao()) return;
+        $resultado = $this->UsuarioModel->Remover($id);
         if ($resultado) {
-            redirect('admin/produto', 'refresh');
+            redirect('usuario', 'refresh');
         } else {
         }
     }

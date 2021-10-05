@@ -11,14 +11,16 @@ class CategoriaController extends CI_Controller
 
     public function Index()
     {
+        if(!Permissao()) return;
         $dados['titulo'] = 'Categorias';
         $dados['sub_titulo'] = 'Listagem';
         $dados['categorias'] = $this->CategoriaModel->ListarTodos();
-        $this->load->view('admin/admin/categorias/index', $dados);
+        $this->load->view('admin/categorias/index', $dados);
     }
 
     public function Details($id)
     {
+        if(!Permissao()) return;
         $dados['titulo'] = 'Categoria';
         $dados['sub_titulo'] = 'Detalhes';
         $dados['categoria']  = $this->CategoriaModel->BuscarPorId($id);
@@ -35,6 +37,7 @@ class CategoriaController extends CI_Controller
 
     public function Create()
     {
+        if(!Permissao()) return;
         $dados['titulo'] = 'Categoria';
         $dados['sub_titulo'] = 'Cadastrar';
         $this->form_validation->set_rules('nome', 'Nome', 'required');
@@ -48,7 +51,7 @@ class CategoriaController extends CI_Controller
             $resultado = $this->CategoriaModel->Inserir($categoria);
 
             if ($resultado) {
-                redirect('admin/categoria');
+                redirect('categoria');
             } else {
                 $this->load->view('admin/categorias/create',  $dados);
             }
@@ -57,6 +60,7 @@ class CategoriaController extends CI_Controller
 
     public function Edit($id)
     {
+        if(!Permissao()) return;
         $dados['titulo'] = 'Categoria';
         $dados['sub_titulo'] = 'Editar';
         $dados['categoria']  = $this->CategoriaModel->BuscarPorId($id);
@@ -81,7 +85,7 @@ class CategoriaController extends CI_Controller
             $resultado = $this->CategoriaModel->Alterar($id, $categoria);
 
             if ($resultado) {
-                redirect('admin/categoria');
+                redirect('categoria');
             } else {
                 $this->load->view('admin/categorias/edit',  $dados);
             }
@@ -90,9 +94,10 @@ class CategoriaController extends CI_Controller
 
     public function Delete($id)
     {
+        if(!Permissao()) return;
         $resultado = $this->CategoriaModel->Remover($id);
         if ($resultado) {
-            redirect('admin/categoria', 'refresh');
+            redirect('categoria', 'refresh');
         } else {
         }
     }

@@ -29,44 +29,73 @@ class UsuarioModel extends CI_Model
 
     public function ListarTodos()
     {
-        $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');
-        $this->db->from('usuario p ');
-        $this->db->join('categoria c', 'c.id = p.categoria_id');
-        $this->db->order_by('c.Nome, p.nome');
+        $this->db->select('id, nome, email');
+        $this->db->from('usuario');
         $query = $this->db->get();
         return $query->result();
     }
 
     public function Listar($filtro)
     {
-        $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');
-        $this->db->from('usuario p ');
-        $this->db->join('categoria c', 'c.id = p.categoria_id');
-        $this->db->like('p.nome', $filtro, '', true);
-        $this->db->or_like('c.nome',  $filtro, '', true);
-        $this->db->or_like('p.descricao',  $filtro, '', true);
-        $this->db->order_by('c.Nome, p.nome');
+        $this->db->select('id, nome, email');
+        $this->db->from('usuario');
+        $this->db->like('email', $filtro, '', true);
+        $this->db->or_like('nome',  $filtro, '', true);
         $query = $this->db->get();
         return $query->result();
     }
 
     public function BuscarPorId($id)
     {
-        $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');
-        $this->db->from('usuario p ');
-        $this->db->join('categoria c', 'c.id = p.categoria_id');
-        $this->db->where('p.id =', $id);
+        $this->db->select('id, nome, email');
+        $this->db->from('usuario');
+        $this->db->where('id =', $id);
         $query = $this->db->get();
         return $query->row();
     }
 
-    public function BuscarPorNome($nome)
+    public function BuscarPorEmail($email)
     {
-        $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');
-        $this->db->from('usuario p ');
-        $this->db->join('categoria c', 'c.id = p.categoria_id');
-        $this->db->like('p.nome LIKE ', $nome);
+        $this->db->select('id, nome, email');
+        $this->db->from('usuario');
+        $this->db->like('email', $email);
         $query = $this->db->get();
         return $query->row();
+    }
+
+    public  function VerificarSenha($email, $senha)
+    {
+        $sql = 'SELECT id, nome, email, senha 
+        FROM usuario WHERE email="' . $email . '"';
+
+        $query = $this->db->query($sql);
+
+        if ($this->db->count_all_results() == 1) {
+            if (password_verify($senha,  $query->row()->senha)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function Entrar($email, $senha)
+    {
+        $sql = 'SELECT id, nome, email, senha 
+                FROM usuario WHERE email="' . $email . '"';
+
+        $query = $this->db->query($sql);
+
+        if ($this->db->count_all_results() == 1) {
+            if (password_verify($senha,  $query->row()->senha)) {
+                return array(
+                    "id" =>  $query->row()->id,
+                    "nome" =>  $query->row()->nome,
+                    "email" =>  $query->row()->email
+                );
+            }
+        }
+
+        return false;
     }
 }
