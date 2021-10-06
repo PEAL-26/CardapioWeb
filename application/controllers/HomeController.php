@@ -12,8 +12,18 @@ class HomeController extends CI_Controller
     {
         $dados['titulo'] = 'Home';
         $dados['sub_titulo'] = 'Dashboard';
-        // $dados['produtos'] = $this->ProdutoModel->ListarTodos();
         $dados['categorias'] = $this->CategoriaModel->ListarTodos();
         $this->load->view('home/index', $dados);
+    }
+
+    public function Admin()
+    {
+        $usuario_logado = $this->session->userdata('usuario_logado');
+        if (!$usuario_logado)  redirect('admin/entrar');
+
+        $dados['titulo'] = 'Admin';
+        $dados['sub_titulo'] = 'Dashboard';
+        $dados['categorias'] = $this->CategoriaModel->ListarTodos();
+        $this->load->view('admin/index', $dados);
     }
 }

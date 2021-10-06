@@ -2,26 +2,9 @@
 /* DBMS name:      MySQL 5.0                                    */
 /* Created on:     05/10/2021 00:33:16                          */
 /*==============================================================*/
-
-
-alter table produto 
-   drop foreign key fk_produto_reference_categori;
-
-drop index index_nome_categoria on categoria;
-
-drop table if exists categoria;
-
-drop index index_nome_produro on produto;
-
-
-alter table produto 
-   drop foreign key fk_produto_reference_categori;
-
-drop table if exists produto;
-
-drop index index_email on usuario;
-
-drop table if exists usuario;
+drop database if exists `cardapio_web_db`;
+create database if not exists `cardapio_web_db`;
+use `cardapio_web_db`;
 
 /*==============================================================*/
 /* Table: categoria                                             */

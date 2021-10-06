@@ -51,7 +51,7 @@ class CategoriaController extends CI_Controller
             $resultado = $this->CategoriaModel->Inserir($categoria);
 
             if ($resultado) {
-                redirect('categoria');
+                redirect('admin/categoria');
             } else {
                 $this->load->view('admin/categorias/create',  $dados);
             }
@@ -64,6 +64,13 @@ class CategoriaController extends CI_Controller
         $dados['titulo'] = 'Categoria';
         $dados['sub_titulo'] = 'Editar';
         $dados['categoria']  = $this->CategoriaModel->BuscarPorId($id);
+        
+        if ($dados['categoria'] == null) {
+            $erro["heading"] = "Categoria";
+            $erro["message"] = "Categoria não econtrada.";
+            $this->load->view('errors/html/error_404',  $erro);
+            return;
+        }
 
         $this->form_validation->set_rules('nome', 'Nome', 'required');
         if ($this->form_validation->run() === FALSE) {
@@ -85,7 +92,7 @@ class CategoriaController extends CI_Controller
             $resultado = $this->CategoriaModel->Alterar($id, $categoria);
 
             if ($resultado) {
-                redirect('categoria');
+                redirect('admin/categoria');
             } else {
                 $this->load->view('admin/categorias/edit',  $dados);
             }
@@ -97,7 +104,7 @@ class CategoriaController extends CI_Controller
         if(!Permissao()) return;
         $resultado = $this->CategoriaModel->Remover($id);
         if ($resultado) {
-            redirect('categoria', 'refresh');
+            redirect('admin/categoria', 'refresh');
         } else {
         }
     }

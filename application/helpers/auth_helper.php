@@ -9,9 +9,10 @@ function Permissao()
         GuardarPaginaActual();
         return true;
     } else {
-        $erro["heading"] = "Acesso negado!";
-        $erro["message"] = "Contactar o administrador.";
-        $ci->load->view('errors/html/error_404',  $erro);
+        redirect('admin/entrar');
+        //$erro["heading"] = "Acesso negado!";
+        //$erro["message"] = "Contactar o administrador.";
+        //$ci->load->view('errors/html/error_404',  $erro);
         return false;
     }
 }

@@ -22,7 +22,7 @@
         #login .container #login-row #login-column #login-box {
             margin-top: 120px;
             max-width: 600px;
-            height: 320px;
+            height: 350px;
             background-color: rgba(0, 0, 0, 0.5);
             border-radius: 15px;
             color: white;
@@ -41,7 +41,7 @@
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-md-6">
                     <div id="login-box" class="col-md-12">
-                        <?php echo form_open('entrar', array('class' => 'form', 'id' => 'login-form')); ?>
+                        <?php echo form_open('admin/entrar', array('class' => 'form', 'id' => 'login-form')); ?>
                         <h3 class="text-center ">Login</h3>
                         <div class="form-group">
                             <label for="email" class="">Email:</label><br>
@@ -56,8 +56,7 @@
                         </div>
                         <div class="form-group">
                             <br>
-                            <input type="submit" name="submit" class="btn btn-success btn-md" value="Entrar">
-                            <a href="<?php echo site_url('home') ?>" class="btn btn-danger btn-md">Cancelar</a>
+                            <input type="submit" name="submit" class="form-control btn btn-success btn-md" value="Entrar">
                         </div>
                         <?= form_close(); ?>
                     </div>

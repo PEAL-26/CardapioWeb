@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
-<?php $this->load->view('_layout/header'); ?>
+<?php $this->load->view('admin/header'); ?>
 
 <div class="section no-pad-bot">
     <div class="container">
@@ -10,7 +10,7 @@
                 </h5>
             </div>
 
-            <?= form_open('categoria/create'); ?>
+            <?= form_open('admin/categoria/create'); ?>
             <div class="row">
                 <div class="input-field col s6">
                     <input placeholder="Nome" id="nome" name="nome" type="text" class="validate" value="<?php echo set_value('nome'); ?>">
@@ -21,7 +21,7 @@
 
             <div class="row">
                 <button class="waves-effect waves-light btn-small">Guardar</button>
-                <a href="<?php echo site_url('categoria') ?>" class="waves-effect red btn-small">Cancelar</a>
+                <a href="<?php echo site_url('admin/categoria') ?>" class="waves-effect red btn-small">Cancelar</a>
             </div>
             <?= form_close(); ?>
         </div>

@@ -54,26 +54,28 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['/'] = 'HomeController/index';
+$route['admin'] = 'HomeController/admin';
 
-$route['categoria'] = 'CategoriaController/index';
-$route['categoria/create'] = 'CategoriaController/create';
-$route['categoria/edit/(:num)'] = 'CategoriaController/edit/$1';
-$route['categoria/details/(:num)'] = 'CategoriaController/details/$1';
-$route['categoria/delete/(:num)'] = 'CategoriaController/delete/$1';
+$route['admin/categoria'] = 'CategoriaController/index';
+$route['admin/categoria/create'] = 'CategoriaController/create';
+$route['admin/categoria/edit/(:num)'] = 'CategoriaController/edit/$1';
+$route['admin/categoria/details/(:num)'] = 'CategoriaController/details/$1';
+$route['admin/categoria/delete/(:num)'] = 'CategoriaController/delete/$1';
 
-$route['produto'] = 'ProdutoController/index';
-$route['produto/create'] = 'ProdutoController/create';
-$route['produto/edit/(:num)'] = 'ProdutoController/edit/$1';
-$route['produto/details/(:num)'] = 'ProdutoController/details/$1';
-$route['produto/delete/(:num)'] = 'ProdutoController/delete/$1';
+$route['admin/produto'] = 'ProdutoController/index';
+$route['admin/produto/create'] = 'ProdutoController/create';
+$route['admin/produto/edit/(:num)'] = 'ProdutoController/edit/$1';
+$route['admin/produto/details/(:num)'] = 'ProdutoController/details/$1';
+$route['admin/produto/delete/(:num)'] = 'ProdutoController/delete/$1';
+$route['admin/produto/filtrar'] = 'ProdutoController/FiltrarProduto';
 $route['produto/filtrar'] = 'ProdutoController/FiltrarProduto';
 
-$route['usuario'] = 'UsuarioController/index';
-$route['usuario/create'] = 'UsuarioController/create';
-$route['usuario/edit/(:num)'] = 'UsuarioController/edit/$1';
-$route['usuario/details/(:num)'] = 'UsuarioController/details/$1';
-$route['usuario/delete/(:num)'] = 'UsuarioController/delete/$1';
+$route['admin/usuario'] = 'UsuarioController/index';
+$route['admin/usuario/create'] = 'UsuarioController/create';
+$route['admin/usuario/edit/(:num)'] = 'UsuarioController/edit/$1';
+$route['admin/usuario/editpassword/(:num)'] = 'UsuarioController/editpassword/$1';
+$route['admin/usuario/details/(:num)'] = 'UsuarioController/details/$1';
+$route['admin/usuario/delete/(:num)'] = 'UsuarioController/delete/$1';
 
-$route['login'] = 'AuthController/index';
-$route['entrar'] = 'AuthController/entrar';
-$route['sair'] = 'AuthController/sair';
+$route['admin/entrar'] = 'AuthController/entrar';
+$route['admin/sair'] = 'AuthController/sair';

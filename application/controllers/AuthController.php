@@ -8,15 +8,7 @@ class AuthController extends CI_Controller
         $this->load->helper('form');
         $this->load->library('form_validation');
     }
-
-    public function Index()
-    {
-        $logado = $this->session->userdata('usuario_logado');
-        if ($logado) IrParaPaginaAnterior();
-
-        $this->load->view('admin/login');
-    }
-
+     
     public function Entrar()
     {
         $logado = $this->session->userdata('usuario_logado');
@@ -26,7 +18,7 @@ class AuthController extends CI_Controller
         $this->form_validation->set_rules('senha', 'Senha', 'required');
 
         if ($this->form_validation->run() === FALSE) {
-            $this->load->view('amdin/login');
+            $this->load->view('admin/login');
         } else {
 
             $email = $this->input->post('email');
@@ -36,11 +28,9 @@ class AuthController extends CI_Controller
             
             if ($resultado) {
                 $this->session->set_userdata('usuario_logado', $resultado);
-                redirect('/');
+                redirect('admin');
             } else {
-                // $this->mensagem->AddMensagemErro('O email ou senha incorrecta.');
-                // $this->mensagem->MostrarMensagens();
-                redirect('login');
+                redirect('admin/entrar');
             }
         }
     }
@@ -49,6 +39,6 @@ class AuthController extends CI_Controller
     {
         $this->session->unset_userdata('usuario_logado');
         $this->session->sess_destroy();
-        redirect('/');
+        redirect('admin');
     }
 }

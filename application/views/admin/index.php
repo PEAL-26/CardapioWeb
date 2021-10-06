@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
-<?php $this->load->view('_layout/header'); ?>
+<?php $this->load->view('admin/header'); ?>
 
 <div>
     <div class="meunu-pesquisa">
@@ -74,8 +74,8 @@
                     <div class="row produto-card" data-id="{{id}}">
                         <div class="col s6">
                             <h5 class="nome grey-text text-darken-4">{{nome}}</h5>
-                            <p  class="descricao">{{descricao}}</p>
-                            <h6 class="valor">R$ {{valor}}</h6>
+                            <p class="descricao">{{descricao}}</p>
+                            <h5 class="valor">R$ {{valor}}</h5>
                         </div>
                         <div class="col s6">
                             <div class="waves-effect waves-block waves-light imagem" >
@@ -156,4 +156,5 @@
         $('#lista-produtos').append(Mustache.render(template, dados));
     }
 </script>
+
 <?php $this->load->view('_layout/footer_end'); ?>

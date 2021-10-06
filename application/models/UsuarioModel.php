@@ -66,7 +66,7 @@ class UsuarioModel extends CI_Model
     public  function VerificarSenha($email, $senha)
     {
         $sql = 'SELECT id, nome, email, senha 
-        FROM usuario WHERE email="' . $email . '"';
+        FROM usuario WHERE email ="' . $email . '"';
 
         $query = $this->db->query($sql);
 
