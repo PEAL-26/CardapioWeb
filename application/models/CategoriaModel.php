@@ -8,41 +8,55 @@ class CategoriaModel extends CI_Model
 
     public function Inserir($categoria)
     {
-        $this->db->trans_begin();
-       
-        $resultado = $this->db->insert('categoria',  $categoria);
-       
-        $this->db->trans_complete();
+        if ($this->ValidoParaInserir($categoria))
+            $resultado = $this->db->insert('categoria',  $categoria);
 
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            return false;
-        } else {
-            $this->db->trans_commit();
-            return true;
-        }
+        return isset($resultado);
+    }
+
+    private function ValidoParaInserir($dados)
+    {
+        if ($this->VerificarSeNomeExisteAoInserir($dados))
+            $this->mensagem->AddMensagemErro('Esse nome já existe.');
+
+        return $this->mensagem->contarMensagens == 0;
+    }
+
+    private function VerificarSeNomeExisteAoInserir($dados)
+    {
+        $resultado = $this->BuscarPorNome($dados['nome']);
+        return  $resultado != null;
     }
 
     public function Alterar($id, $categoria)
     {
-        $this->db->trans_complete();
+        if ($this->ValidoParaAlterar($id, $categoria))
+            $resultado = $this->db->update('categoria',  $categoria, array('id' => $id));
 
-        $resultado = $this->db->update('categoria',  $categoria, array('id' => $id));
-        
-        $this->db->trans_complete();
+        return isset($resultado);
+    }
 
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            return false;
-        } else {
-            $this->db->trans_commit();
-            return true;
-        }
+    private function ValidoParaAlterar($id, $dados)
+    {
+        if ($this->VerificarSeNomeExisteAoAlterar($id, $dados))
+            $this->mensagem->AddMensagemErro('Esse nome já existe.');
+
+        return $this->mensagem->contarMensagens == 0;
+    }
+
+    private function VerificarSeNomeExisteAoAlterar($id, $dados)
+    {
+        $resultado = $this->BuscarPorNome($dados['nome']);
+
+        if (!isset($resultado->id)) return false;
+
+        return  $resultado->id != $id;
     }
 
     public function Remover($id)
     {
         if (!$this->db->simple_query('DELETE FROM categoria WHERE id =' . $id)) {
+            $this->mensagem->AddMensagemErro('Não foi possível remover esse item. Verifique se tem algum produto relacionado.');
             return false;
         }
 
@@ -71,7 +85,7 @@ class CategoriaModel extends CI_Model
     {
         $this->db->select('id, nome');
         $this->db->from('categoria');
-        $this->db->like('nome LIKE ', $nome);
+        $this->db->like('nome', $nome);
         $query = $this->db->get();
         return $query->row();
     }

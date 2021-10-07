@@ -19,7 +19,7 @@ function Delete(url) {
     });
 }
 
-function Mensagem(msg, tipo = "info") {
+function Mensagem(msg,  tipo = "info") {
 
     switch (tipo.toLowerCase()) {
         case 'sucesso':

@@ -53,6 +53,7 @@ class CategoriaController extends CI_Controller
             if ($resultado) {
                 redirect('admin/categoria');
             } else {
+                $this->mensagem->MostrarMensagens();
                 $this->load->view('admin/categorias/create',  $dados);
             }
         }
@@ -94,6 +95,7 @@ class CategoriaController extends CI_Controller
             if ($resultado) {
                 redirect('admin/categoria');
             } else {
+                $this->mensagem->MostrarMensagens();
                 $this->load->view('admin/categorias/edit',  $dados);
             }
         }
@@ -103,9 +105,8 @@ class CategoriaController extends CI_Controller
     {
         if(!Permissao()) return;
         $resultado = $this->CategoriaModel->Remover($id);
-        if ($resultado) {
-            redirect('admin/categoria', 'refresh');
-        } else {
-        }
+        $this->mensagem->MostrarMensagens();
+        redirect('admin/categoria', 'refresh');
+        
     }
 }

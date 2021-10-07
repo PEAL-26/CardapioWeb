@@ -53,6 +53,7 @@
                         <input type="file" name="imagem">
                     </div>
                     <div class="file-path-wrapper">
+                        <input name="nome_imagem_antigo" hidden value="<?php echo set_value('imagem', $produto->imagem); ?>">
                         <input name="nome_imagem" placeholder="Localizar imagem" class="file-path validate" type="text" value="<?php echo set_value('imagem', $produto->imagem); ?>">
                     </div>
                     <?php echo form_error('imagem', '<div class="red-text">', '</div>'); ?>

@@ -46,44 +46,47 @@
 
 <!-- Modal -->
 <div id="modal1" class="modal">
-    <div class="modal-content">
-        <div class="">
+        <div class="modal-content">
+        <button type="button" class="modal-close topright waves-effect btn-floating red btn modal-default-close" data-dismiss="modal" aria-label="Close">
+            <span style="margin-top:-0.21em;" aria-hidden="true">
+                <i class="material-icons">close</i>
+            </span>
+        </button>
+
+        <div class="section no-pad-bot">
             <img id="modal-imagem" class="responsive-img" src="" alt="">
         </div>
 
         <span id="modal-id"></span>
-        <h4 id="modal-nome"></h4>
-        <p id="modal-descricao" align="justify"></p>
+        <h5 id="modal-nome"></h5>
+        <p id="modal-descricao"></p>
         <h6 id="modal-valor"></h6>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fechar</a>
     </div>
 </div>
 
 <!-- Tamplate Mustache - Lista de Produtos -->
 <script id="tamplate-lista-produtos" type="text/template">
     <div class="row lista-produtos section scrollspy" id="{{categoria}}">
-            <div class="col s12">
-                    {{#categoria}}
-                    <div class="row "  >
-                        <h5 class="header col s12 light">{{categoria}}</h5>
-                    </div> 
-                    {{/categoria}}
-                 
-                    <div class="row produto-card" data-id="{{id}}">
-                        <div class="col s6">
-                            <h5 class="nome grey-text text-darken-4">{{nome}}</h5>
-                            <p  class="descricao">{{descricao}}</p>
-                            <h6 class="valor">R$ {{valor}}</h6>
-                        </div>
-                        <div class="col s6">
-                            <div class="waves-effect waves-block waves-light imagem" >
-                                <img class="img" src="{{imagem}}">
-                            </div>
-                        </div>
-                    </div> 
-            </div>
+        <div class="col s12">
+            {{#categoria}}
+            <div class="row "  >
+                <h5 class="header col s12 light">{{categoria}}</h5>
+            </div> 
+            {{/categoria}}
+                
+            <div class="row produto-card" data-id="{{id}}">
+                <div class="col s6">
+                    <h5 class="nome grey-text text-darken-4">{{nome}}</h5>
+                    <p  class="descricao">{{descricao}}</p>
+                    <h6 class="valor">R$ {{valor}}</h6>
+                </div>
+                <div class="col s6">
+                    <div class="waves-effect waves-block waves-light imagem" >
+                        <img class="img" src="{{imagem}}">
+                    </div>
+                </div>
+            </div> 
+        </div>
     </div>        
 </script>
 
@@ -144,7 +147,7 @@
             } else if (dados['filtro'] != '' && resultado.length == 0) {
                 $('#lista-produtos').html('<h5 class="header col s12 light center"> Não encontramos nenhum resultado para a sua busca.</h5>')
                 $('._menu').hide();
-            }else{
+            } else {
                 $('#lista-produtos').html('<h5 class="header col s12 light center">Não existe nenhum produto para ser mostrado..</h5>')
                 $('._menu').hide();
             }

@@ -10,7 +10,7 @@
     float: left;
     color: #000000;
     width: 100%;
-    font-size:18px;
+    font-size: 18px;
     font-weight: bold;
     line-height: 18px;
 }
@@ -23,7 +23,6 @@
         max-height: 100px;
         overflow-y: auto;
     }
-    
     .lista-produtos .row {
         margin-bottom: 0px !important;
         display: flex;
@@ -90,7 +89,35 @@ nav .input-field label.active i {
     color: rgb(0, 0, 0);
 }
 
-/* scroll buttom */
+/*botão fechar modal*/
+
+.modal-default-close {
+    margin: 0;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 23px;
+    color: #ffffff;
+    font-size: 40px;
+    opacity: 1;
+    z-index: 10;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Modal Content */
+.modal1 .modal-content {
+    padding: 15px !important;
+    position: relative !important;
+    border-radius: 25px !important;
+}
+
+/*botão de rolagem do menu*/
 
 ._menu {
     margin: 0 auto 2rem;

@@ -8,19 +8,55 @@ class ProdutoModel extends CI_Model
 
     public function Inserir($produto)
     {
-        $resultado = $this->db->insert('produto',  $produto);
+        if ($this->ValidoParaInserir($produto))
+            $resultado = $this->db->insert('produto',  $produto);
+
         return isset($resultado);
+    }
+
+    private function ValidoParaInserir($dados)
+    {
+        if ($this->VerificarSeNomeExisteAoInserir($dados))
+            $this->mensagem->AddMensagemErro('Esse nome já existe.');
+
+        return $this->mensagem->contarMensagens == 0;
+    }
+
+    private function VerificarSeNomeExisteAoInserir($dados)
+    {
+        $resultado = $this->BuscarPorNome($dados['nome']);
+        return  $resultado != null;
     }
 
     public function Alterar($id, $produto)
     {
-        $resultado = $this->db->update('produto',  $produto, array('id' => $id));
+        if ($this->ValidoParaAlterar($id, $produto))
+            $resultado = $this->db->update('produto',  $produto, array('id' => $id));
+
         return isset($resultado);
+    }
+
+    private function ValidoParaAlterar($id, $dados)
+    {
+        if ($this->VerificarSeNomeExisteAoAlterar($id, $dados))
+            $this->mensagem->AddMensagemErro('Esse nome já existe.');
+
+        return $this->mensagem->contarMensagens == 0;
+    }
+
+    private function VerificarSeNomeExisteAoAlterar($id, $dados)
+    {
+        $resultado = $this->BuscarPorNome($dados['nome']);
+
+        if (!isset($resultado->id)) return false;
+
+        return  $resultado->id != $id;
     }
 
     public function Remover($id)
     {
         if (!$this->db->simple_query('DELETE FROM produto WHERE id =' . $id)) {
+            $this->mensagem->AddMensagemErro('Não foi possível remover esse item. Verifique se tem algum produto relacionado.');
             return false;
         }
 
@@ -65,7 +101,7 @@ class ProdutoModel extends CI_Model
         $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');
         $this->db->from('produto p ');
         $this->db->join('categoria c', 'c.id = p.categoria_id');
-        $this->db->like('p.nome LIKE ', $nome);
+        $this->db->like('p.nome', $nome);
         $query = $this->db->get();
         return $query->row();
     }
