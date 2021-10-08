@@ -59,22 +59,15 @@ class UsuarioController extends CI_Controller
                     "nome" => $this->input->post('nome'),
                     "senha" => password_hash($this->input->post('senha'), PASSWORD_DEFAULT)
                 );
-
-                $verificar = $this->UsuarioModel->BuscarPorEmail($usuario["email"]);
-                if ($verificar != null) $dados['msg'] .= '\\nEsse email já foi cadastrado.';
-
-                $resultado = false;
-            } else {
-                $resultado = false;
-                $dados['msg'] .= '\\nSenhas diferentes.';
             }
 
-            // if ($dados['msg'] = '')
-            $resultado = $this->UsuarioModel->Inserir($usuario);
+            if ($this->mensagem->contarMensagens == 0)
+                $resultado = $this->UsuarioModel->Inserir($usuario);
 
             if ($resultado) {
                 redirect('admin/usuario');
             } else {
+                $this->mensagem->MostrarMensagens();
                 $this->load->view('admin/usuarios/create',  $dados);
             }
         }
@@ -109,15 +102,12 @@ class UsuarioController extends CI_Controller
                 return;
             }
 
-            $verificar = $this->UsuarioModel->BuscarPorEmail($usuario["email"]);
-            if ($verificar != null && $verificar->id != $id) $dados['msg'] .= "\n Esse email já foi cadastrado.";
-
-            if ($dados['msg'] == '')
-                $resultado = $this->UsuarioModel->Alterar($id, $usuario);
+            $resultado = $this->UsuarioModel->Alterar($id, $usuario);
 
             if ($resultado) {
                 redirect('admin/usuario');
             } else {
+                $this->mensagem->MostrarMensagens();
                 $this->load->view('admin/usuarios/edit',  $dados);
             }
         }
@@ -145,19 +135,17 @@ class UsuarioController extends CI_Controller
 
             $validarSenha = $this->ValidarEdicaoSenha($dados["usuario"]->email);
 
-            if ($validarSenha["estado"] = 'editar') {
+            if (is_array($validarSenha) && $validarSenha["estado"] = 'editar') {
                 $usuario["senha"] = password_hash($validarSenha["resultado"], PASSWORD_DEFAULT);
-            } else if ($validarSenha["estado"] != TRUE) {
-                $dados['msg'] .= "<p>" . $validarSenha["resultado"] . "</p>";
             }
 
-
-            // if ($dados['msg'] = '')
-            $resultado = $this->UsuarioModel->Alterar($id, $usuario);
+            if ($this->mensagem->contarMensagens == 0)
+                $resultado = $this->UsuarioModel->Alterar($id, $usuario);
 
             if ($resultado) {
                 redirect('admin/usuario');
             } else {
+                $this->mensagem->MostrarMensagens();
                 $this->load->view('admin/usuarios/edit_password',  $dados);
             }
         }
@@ -168,38 +156,39 @@ class UsuarioController extends CI_Controller
     {
         $antiga = $this->input->post('senha_antiga');
         $nova = $this->input->post('senha_nova');
-        $repetir = $this->input->post('senha_nova_repetir');
+        $repetir = $this->input->post('senha_repetir');
         if (!empty($antiga)) {
             if (!$this->UsuarioModel->VerificarSenha($email, $antiga))
-                return array("estado" => 'senha_antiga_invalida', "resultado" => 'Senha antiga inválida.');
+                $this->mensagem->AddMensagemErro('Senha antiga inválida.');
 
             if (empty($nova))
-                return  array("estado" => 'campo_vazio', "resultado" => 'Preencher senha nova.');
+                $this->mensagem->AddMensagemErro('Preencher senha nova.');
 
             if (empty($repetir))
-                return array("estado" => 'campo_vazio', "resultado" => 'Preencher repetir senha.');
+                $this->mensagem->AddMensagemErro('Preencher repetir senha.');
 
             if ($this->VerificarSenhaIgual($nova, $repetir)) {
-                return array("estado" => 'editar', "resultado" => $nova);
+                array("estado" => 'editar', "resultado" => $nova);
             } else {
-                return  array("estado" => 'senha_diferente', "resultado" => 'Repetir senha diferente da nova senha.');
+                $this->mensagem->AddMensagemErro('Repetir senha diferente da nova senha.');
             }
         }
 
         if (!empty($nova) || !empty($repetir)) {
             if (empty($antiga))
-                return array("estado" => 'campo_vazio', "resultado" => 'Preencher senha antiga.');
+                $this->mensagem->AddMensagemErro('Preencher senha antiga.');
 
             if (empty($nova))
-                return  array("estado" => 'campo_vazio', "resultado" => 'Preencher senha nova.');
+                $this->mensagem->AddMensagemErro('Preencher senha nova..');
         }
 
-        return  array("estado" => TRUE);
+        return TRUE;
     }
 
     private function VerificarSenhaIgual($senha, $repetir)
     {
         if ($senha != $repetir) {
+            $this->mensagem->AddMensagemErro('Senhas diferentes.');
             return FALSE;
         }
 
@@ -210,9 +199,7 @@ class UsuarioController extends CI_Controller
     {
         if (!Permissao()) return;
         $resultado = $this->UsuarioModel->Remover($id);
-        if ($resultado) {
-            redirect('admin/usuario', 'refresh');
-        } else {
-        }
+        $this->mensagem->MostrarMensagens();
+        redirect('admin/usuario', 'refresh');
     }
 }

@@ -8,19 +8,55 @@ class UsuarioModel extends CI_Model
 
     public function Inserir($usuario)
     {
-        $resultado = $this->db->insert('usuario',  $usuario);
+        if ($this->ValidoParaInserir($usuario))
+            $resultado = $this->db->insert('usuario',  $usuario);
+
         return isset($resultado);
+    }
+
+    private function ValidoParaInserir($dados)
+    {
+        if ($this->VerificarSeEmailExisteAoInserir($dados))
+            $this->mensagem->AddMensagemErro('Esse email já existe.');
+
+        return $this->mensagem->contarMensagens == 0;
+    }
+
+    private function VerificarSeEmailExisteAoInserir($dados)
+    {
+        $resultado = $this->BuscarPorEmail($dados['email']);
+        return  $resultado != null;
     }
 
     public function Alterar($id, $usuario)
     {
-        $resultado = $this->db->update('usuario',  $usuario, array('id' => $id));
+        if ($this->ValidoParaAlterar($id, $usuario))
+            $resultado = $this->db->update('usuario',  $usuario, array('id' => $id));
+
         return isset($resultado);
+    }
+
+    private function ValidoParaAlterar($id, $dados)
+    {
+        if ($this->VerificarSeEmailExisteAoAlterar($id, $dados))
+            $this->mensagem->AddMensagemErro('Esse email já existe.');
+
+        return $this->mensagem->contarMensagens == 0;
+    }
+
+    private function VerificarSeEmailExisteAoAlterar($id, $dados)
+    {
+        $resultado = $this->BuscarPorEmail($dados['email']);
+
+        if (!isset($resultado->id)) return false;
+
+        return  $resultado->id != $id;
     }
 
     public function Remover($id)
     {
         if (!$this->db->simple_query('DELETE FROM usuario WHERE id =' . $id)) {
+            $this->mensagem->AddMensagemErro('Não foi possível remover esse usuário.');
             return false;
         }
 

@@ -46,14 +46,14 @@
 
 <!-- Modal -->
 <div id="modal1" class="modal">
-        <div class="modal-content">
+    <div class="modal-content">
         <button type="button" class="modal-close topright waves-effect btn-floating red btn modal-default-close" data-dismiss="modal" aria-label="Close">
-            <span style="margin-top:-0.21em;" aria-hidden="true">
+            <span aria-hidden="true">
                 <i class="material-icons">close</i>
             </span>
         </button>
 
-        <div class="section no-pad-bot">
+        <div class="section">
             <img id="modal-imagem" class="responsive-img" src="" alt="">
         </div>
 
@@ -76,9 +76,9 @@
                 
             <div class="row produto-card" data-id="{{id}}">
                 <div class="col s6">
-                    <h5 class="nome grey-text text-darken-4">{{nome}}</h5>
-                    <p  class="descricao">{{descricao}}</p>
-                    <h6 class="valor">R$ {{valor}}</h6>
+                    <div class="nome"><h5 class="grey-text text-darken-4">{{nome}}</h5></div>
+                    <div class="descricao"><p >{{descricao}}</p></div>
+                    <div class="valor"><h6 >R$ {{valor}}</h6></div>
                 </div>
                 <div class="col s6">
                     <div class="waves-effect waves-block waves-light imagem" >
@@ -140,7 +140,7 @@
                         nome: value.nome,
                         descricao: value.descricao,
                         valor: value.valor,
-                        imagem: '<?= base_url() ?>' + value.imagem
+                        imagem: value.imagem == null ? '<?= base_url() ?>' + 'assets/imagens/default/default.png' : '<?= base_url() ?>' + value.imagem
                     });
 
                 });
