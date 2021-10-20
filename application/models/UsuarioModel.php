@@ -122,6 +122,8 @@ class UsuarioModel extends CI_Model
 
         $query = $this->db->query($sql);
 
+
+
         if ($this->db->count_all_results() == 1) {
             if (password_verify($senha,  $query->row()->senha)) {
                 return array(

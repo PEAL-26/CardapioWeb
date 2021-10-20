@@ -68,7 +68,8 @@ class ProdutoModel extends CI_Model
         $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');
         $this->db->from('produto p ');
         $this->db->join('categoria c', 'c.id = p.categoria_id');
-        $this->db->order_by('c.Nome, p.nome');
+        $this->db->join('tipo t', 't.id = c.tipo_id', 'left');
+        $this->db->order_by('t.ordem, c.Nome, p.nome');
         $query = $this->db->get();
         return $query->result();
     }
@@ -78,6 +79,8 @@ class ProdutoModel extends CI_Model
         $this->db->select('p.id, p.nome, c.nome categoria, p.descricao, p.valor, p.imagem');
         $this->db->from('produto p ');
         $this->db->join('categoria c', 'c.id = p.categoria_id');
+        $this->db->join('tipo t', 't.id = c.tipo_id', 'left');
+        $this->db->order_by('t.ordem, c.Nome, p.nome');
         $this->db->like('p.nome', $filtro, '', true);
         $this->db->or_like('c.nome',  $filtro, '', true);
         $this->db->or_like('p.descricao',  $filtro, '', true);

@@ -10,32 +10,32 @@
                 <h5><?= $titulo . ' - ' . $sub_titulo; ?>
                 </h5>
             </div>
-            <?= form_open('admin/categoria/details/' . $categoria->id); ?>
+            <?= form_open('admin/tipo/details/' . $tipo->id); ?>
 
             <div class="row">
                 <div class="input-field col s6">
-                    <input disabled value=" <?php echo $categoria->id; ?>" id="id" type="text" class="validate">
+                    <input disabled value=" <?php echo $tipo->id; ?>" id="id" type="text" class="validate">
                     <label for="id">Id</label>
                 </div>
             </div>
 
             <div class="row">
                 <div class="input-field col s6">
-                    <input disabled value=" <?php echo $categoria->nome; ?>" id="nome" type="text" class="validate">
+                    <input disabled value=" <?php echo $tipo->nome; ?>" id="nome" type="text" class="validate">
                     <label for="nome">Nome</label>
                 </div>
             </div>
 
             <div class="row">
                 <div class="input-field col s6">
-                    <input disabled value=" <?php echo $categoria->tipo; ?>" id="tipo" type="text" class="validate">
-                    <label for="nome">Tipo</label>
+                    <input disabled value=" <?php echo $tipo->ordem; ?>" id="ordem" type="text" class="validate">
+                    <label for="ordem">Ordem</label>
                 </div>
             </div>
 
             <div class="row">
-                <a href="<?php echo site_url('admin/categoria/edit/' .  $categoria->id) ?>" class="waves-effect waves-light  btn-small">Alterar</a>
-                <a href="<?php echo site_url('admin/categoria') ?>" class="waves-effect red btn-small">Voltar</a>
+                <a href="<?php echo site_url('admin/tipo/edit/' .  $tipo->id) ?>" class="waves-effect waves-light  btn-small">Alterar</a>
+                <a href="<?php echo site_url('admin/tipo') ?>" class="waves-effect red btn-small">Voltar</a>
             </div>
             <?= form_close(); ?>
         </div>

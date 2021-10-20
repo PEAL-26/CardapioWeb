@@ -5,6 +5,7 @@ class CategoriaController extends CI_Controller
     {
         parent::__construct();
         $this->load->model('CategoriaModel');
+        $this->load->model('TipoModel');
         $this->load->helper('form');
         $this->load->library('form_validation');
     }
@@ -40,12 +41,16 @@ class CategoriaController extends CI_Controller
         if(!Permissao()) return;
         $dados['titulo'] = 'Categoria';
         $dados['sub_titulo'] = 'Cadastrar';
+        $dados['tipos'] = $this->TipoModel->ListarTodos();
+
         $this->form_validation->set_rules('nome', 'Nome', 'required');
+        $this->form_validation->set_rules('tipo_id', 'Tipo', 'required');
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('admin/categorias/create', $dados);
         } else {
             $categoria = array(
-                "nome" => $this->input->post('nome')
+                "nome" => $this->input->post('nome'),
+                "tipo_id" => $this->input->post('tipo_id')
             );
 
             $resultado = $this->CategoriaModel->Inserir($categoria);
@@ -65,7 +70,8 @@ class CategoriaController extends CI_Controller
         $dados['titulo'] = 'Categoria';
         $dados['sub_titulo'] = 'Editar';
         $dados['categoria']  = $this->CategoriaModel->BuscarPorId($id);
-        
+        $dados['tipos'] = $this->TipoModel->ListarTodos();
+
         if ($dados['categoria'] == null) {
             $erro["heading"] = "Categoria";
             $erro["message"] = "Categoria não econtrada.";
@@ -74,13 +80,15 @@ class CategoriaController extends CI_Controller
         }
 
         $this->form_validation->set_rules('nome', 'Nome', 'required');
+        $this->form_validation->set_rules('tipo_id', 'Tipo', 'required');
         if ($this->form_validation->run() === FALSE) {
             $this->load->view('admin/categorias/edit', $dados);
         } else {
             
             $categoria = array(
                 "id" => $this->input->post('id'),
-                "nome" => $this->input->post('nome')
+                "nome" => $this->input->post('nome'),
+                "tipo_id" => $this->input->post('tipo_id')
             );
     
             if ($dados['categoria'] == null || $id != $categoria["id"]) {

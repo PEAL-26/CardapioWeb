@@ -1,15 +1,15 @@
 <?php
-class CategoriaModel extends CI_Model
+class TipoModel extends CI_Model
 {
     public function __construct()
     {
         $this->load->database();
     }
 
-    public function Inserir($categoria)
+    public function Inserir($tipo)
     {
-        if ($this->ValidoParaInserir($categoria))
-            $resultado = $this->db->insert('categoria',  $categoria);
+        if ($this->ValidoParaInserir($tipo))
+            $resultado = $this->db->insert('tipo',  $tipo);
 
         return isset($resultado);
     }
@@ -28,10 +28,10 @@ class CategoriaModel extends CI_Model
         return  $resultado != null;
     }
 
-    public function Alterar($id, $categoria)
+    public function Alterar($id, $tipo)
     {
-        if ($this->ValidoParaAlterar($id, $categoria))
-            $resultado = $this->db->update('categoria',  $categoria, array('id' => $id));
+        if ($this->ValidoParaAlterar($id, $tipo))
+            $resultado = $this->db->update('tipo',  $tipo, array('id' => $id));
 
         return isset($resultado);
     }
@@ -55,7 +55,7 @@ class CategoriaModel extends CI_Model
 
     public function Remover($id)
     {
-        if (!$this->db->simple_query('DELETE FROM categoria WHERE id =' . $id)) {
+        if (!$this->db->simple_query('DELETE FROM tipo WHERE id =' . $id)) {
             $this->mensagem->AddMensagemErro('Não foi possível remover esse item. Verifique se tem algum produto relacionado.');
             return false;
         }
@@ -65,31 +65,27 @@ class CategoriaModel extends CI_Model
 
     public function ListarTodos()
     {
-        $this->db->select('c.id, c.nome, t.nome tipo, t.ordem');
-        $this->db->from('categoria c');
-        $this->db->join('tipo t','t.id = c.tipo_id', 'left');
-        $this->db->order_by('t.ordem, c.nome');
+        $this->db->select('id, nome, ordem');
+        $this->db->from('tipo');
+        $this->db->order_by('ordem');
         $query = $this->db->get();
         return $query->result();
     }
 
     public function BuscarPorId($id)
     {
-    
-        $this->db->select('c.id, c.nome, t.nome tipo, t.ordem');
-        $this->db->from('categoria c');
-        $this->db->join('tipo t','t.id = c.tipo_id', 'left');
-        $this->db->where('c.id =', $id);
+        $this->db->select('id, nome, ordem');
+        $this->db->from('tipo');
+        $this->db->where('id =', $id);
         $query = $this->db->get();
         return $query->row();
     }
 
     public function BuscarPorNome($nome)
-    {      
-        $this->db->select('c.id, c.nome, t.nome tipo, t.ordem');
-        $this->db->from('categoria c');
-        $this->db->join('tipo t','t.id = c.tipo_id', 'left');
-        $this->db->like('c.nome', $nome);
+    {
+        $this->db->select('id, nome, ordem');
+        $this->db->from('tipo');
+        $this->db->like('nome', $nome);
         $query = $this->db->get();
         return $query->row();
     }

@@ -5,9 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link type="text/css" rel="stylesheet" href="<?php echo base_url("assets/css/material.icons.css"); ?>">
-    <link type="text/css" rel="stylesheet" href="<?php echo base_url("assets/css/materialize.min.css"); ?>" media="screen,projection" /> -->
-    <link type="text/css" rel="stylesheet" href="<?php echo base_url("assets/css/bootstrap.min.css"); ?>" media="screen,projection" />
+     <link type="text/css" rel="stylesheet" href="<?php echo base_url("assets/css/bootstrap.min.css"); ?>" media="screen,projection" />
 
     <title>Cardápio Web</title>
 
@@ -45,13 +43,13 @@
                         <h3 class="text-center ">Login</h3>
                         <div class="form-group">
                             <label for="email" class="">Email:</label><br>
-                            <input type="text" name="email" id="email" class="form-control">
+                            <input type="text" name="email" id="email" class="form-control" value="<?php echo set_value('email'); ?>">
                             <?php echo form_error('email', '<div class="red-text">', '</div>'); ?>
                         </div>
                         <br>
                         <div class="form-group">
                             <label for="senha" class="">Senha:</label><br>
-                            <input type="password" name="senha" id="senha" class="form-control">
+                            <input type="password" name="senha" id="senha" class="form-control" value="<?php echo set_value('senha'); ?>">
                             <?php echo form_error('senha', '<div class="red-text">', '</div>'); ?>
                         </div>
                         <div class="form-group">
@@ -68,6 +66,11 @@
     <script src="<?php echo base_url("assets/js/jquery-3.6.0.min.js"); ?>"></script>
     <script src="<?php echo base_url("assets/js/materialize.min.js"); ?>"></script>
     <script src="<?php echo base_url("assets/js/sweetalert2.min.js"); ?>"></script>
+    <script src="<?php echo base_url("assets/js/mensagem.js"); ?>"></script>
+    <?php 
+        $this->mensagem->VisualizarMensagens();
+        $this->mensagem->Limpar();
+    ?>
 </body>
 
 </html>

@@ -6,9 +6,9 @@
     <div class="container">
 
         <div class="row">
-            <div class="row">
-                <h5 class="header"><?= $titulo . ' - ' . $sub_titulo; ?>
-                    <a class="right btn-floating btn waves-effect waves-light red" href="<?php echo site_url('admin/produto/create') ?> "><i class="material-icons">add</i></a>
+            <div class="section">
+                <h5><?= $titulo . ' - ' . $sub_titulo; ?>
+                    <a class="right btn-floating btn waves-effect waves-light red" href="<?php echo site_url('admin/tipo/create') ?> "><i class="material-icons">add</i></a>
                 </h5>
             </div>
 
@@ -16,23 +16,21 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Categoria</th>
-                        <th>Valor</th>
+                        <th>Ordem</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($produtos as $produto) : ?>
+                    <?php foreach ($tipos as $tipo) : ?>
                         <tr>
-                            <td><?php echo  $produto->nome ?></td>
-                            <td><?php echo  $produto->categoria ?></td>
-                            <td><?php echo  $produto->valor ?></td>
+                            <td><?php echo  $tipo->nome ?></td>
+                            <td><?php echo  $tipo->ordem ?></td>
                             <td class="right">
-                                <a href="<?php echo site_url('admin/produto/details/' . $produto->id) ?>">
+                                <a href="<?php echo site_url('admin/tipo/details/' . $tipo->id) ?>">
                                     <i class="material-icons">remove_red_eye</i></a>
-                                <a href="<?php echo site_url('admin/produto/edit/' . $produto->id) ?>">
+                                <a href="<?php echo site_url('admin/tipo/edit/' . $tipo->id) ?>">
                                     <i class="material-icons">edit</i></a>
-                                <a href="javascript:Delete('<?php echo site_url('admin/produto/delete/' . $produto->id) ?>')">
+                                <a href="javascript:Delete('<?php echo site_url('admin/tipo/delete/' . $tipo->id) ?>')">
                                     <i class="material-icons">delete</i></a>
                             </td>
                         </tr>

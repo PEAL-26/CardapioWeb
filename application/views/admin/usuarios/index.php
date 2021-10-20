@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <?php $this->load->view('admin/header'); ?>
+</nav>
 
 <div class="section no-pad-bot">
     <div class="container">

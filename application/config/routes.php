@@ -62,6 +62,12 @@ $route['admin/categoria/edit/(:num)'] = 'CategoriaController/edit/$1';
 $route['admin/categoria/details/(:num)'] = 'CategoriaController/details/$1';
 $route['admin/categoria/delete/(:num)'] = 'CategoriaController/delete/$1';
 
+$route['admin/tipo'] = 'TipoController/index';
+$route['admin/tipo/create'] = 'TipoController/create';
+$route['admin/tipo/edit/(:num)'] = 'TipoController/edit/$1';
+$route['admin/tipo/details/(:num)'] = 'TipoController/details/$1';
+$route['admin/tipo/delete/(:num)'] = 'TipoController/delete/$1';
+
 $route['admin/produto'] = 'ProdutoController/index';
 $route['admin/produto/create'] = 'ProdutoController/create';
 $route['admin/produto/edit/(:num)'] = 'ProdutoController/edit/$1';

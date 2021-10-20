@@ -31,6 +31,10 @@
     padding-top: 5px;
 }
 
+.meu {
+    height: 180px !important;
+}
+
 @media screen and (min-width: 758px) {
     div .descricao {
         color: #666666;
@@ -103,7 +107,11 @@
 }
 
 .meunu-pesquisa .pesquisar {
-    background-color: white;
+    background-color: rgb(255, 255, 255);
+}
+
+.pesquisar .input-field {
+    height: 65px !important;
 }
 
 nav .input-field label i {
@@ -117,7 +125,6 @@ nav .input-field label.active i {
 }
 
 /*botão fechar modal*/
-
 .modal-default-close {
     margin: 13px;
     position: absolute;
@@ -137,19 +144,17 @@ nav .input-field label.active i {
     transform: translate(-50%, -50%);
 }
 
-/*botão de rolagem do menu*/
-
 ._menu {
-    margin: 0 auto 2rem;
-    position: relative;
+    /* margin: 0 auto 2rem !important; */
+    position: relative !important;
 }
 
 ._menu-content {
-    padding: 1rem;
+    padding: 1rem !important;
 }
 
 ._menu-content .simplebar-content {
-    display: flex;
+    display: flex !important;
 }
 
 ._menu-content ._item {

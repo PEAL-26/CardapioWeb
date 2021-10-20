@@ -1,42 +1,43 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <?php $this->load->view('admin/header'); ?>
 
-<div>
-    <div class="meunu-pesquisa">
-        <!-- Barra de Pesquisa -->
-        <!-- <nav class="pesquisar"> -->
-        <div class="nav-wrapper pesquisar">
-            <div class="input-field">
-                <input id="search" class="" type="search" placeholder="Pesquisar">
-                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                <i id="close-search" class="material-icons">close</i>
-            </div>
-        </div>
-        <!-- </nav> -->
 
-        <!-- Menu de Categorias -->
-        <div class="_menu  grey lighten-2">
-            <div class="_menu-content table-of-contents">
-                <?php $count = 0; ?>
-                <?php foreach ($categorias as $categoria) : ?>
-                    <div class="_item <?php if (++$count == 1) echo 'active'; ?>"><a href="#<?= $categoria->nome; ?>"><?= $categoria->nome; ?></a></div>
-                <?php endforeach; ?>
+    <div class="nav-content">
+        <div class="meunu-pesquisa">           
+            <div class="nav-wrapper pesquisar">
+                
+                <div class="input-field">
+                    <input id="search" class="" type="search" placeholder="Pesquisar">
+                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                    <i id="close-search" class="material-icons">close</i>
+                </div>
             </div>
 
-            <div class="_botao _left hide-on-small-only">
-                <a class="scrollLeft" href="#"><strong><i class="material-icons red-text">arrow_back</i></strong></a>
-            </div>
-            <div class="_botao _right hide-on-small-only">
-                <a class="scrollRight" href="#"><strong><i class="material-icons red-text">arrow_forward</i></strong></a>
+            <!-- Menu de Categorias -->
+            <div id="menu-categoria" class="_menu  grey lighten-2">
+                <div class="_menu-content table-of-contents">
+                    <?php $count = 0; ?>
+                    <?php foreach ($categorias as $categoria) : ?>
+                        <div class="_item <?php if (++$count == 1) echo 'active'; ?>"><a href="#<?= $categoria->nome; ?>"><?= $categoria->nome; ?></a></div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="_botao _left hide-on-small-only">
+                    <a class="scrollLeft" href="#"><strong><i class="material-icons red-text">arrow_back</i></strong></a>
+                </div>
+                <div class="_botao _right hide-on-small-only">
+                    <a class="scrollRight" href="#"><strong><i class="material-icons red-text">arrow_forward</i></strong></a>
+                </div>
             </div>
         </div>
+
     </div>
+</nav>
 
-    <div class="section no-pad">
-        <div class="conteudo-principal">
-            <!-- Lista de Produtos Por Categoria-->
-            <div id="lista-produtos" class="container no-pad"> </div>
-        </div>
+<div class="section no-pad">
+    <div class="conteudo-principal">
+        <!-- Lista de Produtos Por Categoria-->
+        <div id="lista-produtos" class="container no-pad"> </div>
     </div>
 </div>
 
@@ -88,6 +89,8 @@
 </script>
 
 <script type="text/javascript">
+    var imagemPadrao = '<?= base_url() ?>' + 'assets/imagens/default/default.png';
+
     $(document).ready(function() {
         $('.modal').modal();
         $('.scrollspy').scrollSpy();
@@ -129,7 +132,7 @@
                         ultima_categoria = value.categoria;
                     else
                         ultima_categoria = false;
-
+                    var imagemActual = '<?= base_url() ?>' + value.imagem;
                     InserirDadosNaLista({
                         id: value.id,
                         ancora: ultima_categoria,
@@ -137,18 +140,24 @@
                         nome: value.nome,
                         descricao: value.descricao,
                         valor: value.valor,
-                        imagem: '<?= base_url() ?>' + value.imagem
+                        imagem: ImagemExiste(imagemActual) ? imagemActual : imagemPadrao
                     });
 
                 });
             } else if (dados['filtro'] != '' && resultado.length == 0) {
                 $('#lista-produtos').html('<h5 class="header col s12 light center"> Não encontramos nenhum resultado para a sua busca.</h5>')
                 $('._menu').hide();
-            }else{
+            } else {
                 $('#lista-produtos').html('<h5 class="header col s12 light center">Não existe nenhum produto para ser mostrado..</h5>')
                 $('._menu').hide();
             }
         });
+    }
+
+    function ImagemExiste(url) {
+        var img = new Image();
+        img.src = url;
+        return img.height != 0;
     }
 
     function InserirDadosNaLista(dados) {

@@ -1,44 +1,50 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <?php $this->load->view('_layout/header'); ?>
 
-<div>
-    <div class="meunu-pesquisa">
-        <!-- Barra de Pesquisa -->
-        <!-- <nav class="pesquisar"> -->
-        <div class="nav-wrapper pesquisar">
-            <div class="input-field">
-                <input id="search" class="" type="search" placeholder="Pesquisar">
-                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                <i id="close-search" class="material-icons">close</i>
-            </div>
-        </div>
-        <!-- </nav> -->
-
-        <!-- Menu de Categorias -->
-        <div class="_menu  grey lighten-2">
-            <div class="_menu-content table-of-contents">
-                <?php $count = 0; ?>
-                <?php foreach ($categorias as $categoria) : ?>
-                    <div class="_item <?php if (++$count == 1) echo 'active'; ?>"><a href="#<?= $categoria->nome; ?>"><?= $categoria->nome; ?></a></div>
-                <?php endforeach; ?>
-            </div>
-
-            <div class="_botao _left hide-on-small-only">
-                <a class="scrollLeft" href="#"><strong><i class="material-icons red-text">arrow_back</i></strong></a>
-            </div>
-            <div class="_botao _right hide-on-small-only">
-                <a class="scrollRight" href="#"><strong><i class="material-icons red-text">arrow_forward</i></strong></a>
-            </div>
-        </div>
+<nav class="menu nav-extended navbar-fixed">
+    <div class="nav-wrapper">
+        <a href="<?php echo site_url('/'); ?>" class="brand-logo"> Cardápio Web</a>
     </div>
 
-    <div class="section no-pad">
-        <div class="conteudo-principal">
-            <!-- Lista de Produtos Por Categoria-->
-            <div id="lista-produtos" class="container no-pad"> </div>
+    <div class="nav-content">
+        <div class="meunu-pesquisa">           
+            <div class="nav-wrapper pesquisar">
+                
+                <div class="input-field">
+                    <input id="search" class="" type="search" placeholder="Pesquisar">
+                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                    <i id="close-search" class="material-icons">close</i>
+                </div>
+            </div>
+
+            <!-- Menu de Categorias -->
+            <div id="menu-categoria" class="_menu  grey lighten-2">
+                <div class="_menu-content table-of-contents">
+                    <?php $count = 0; ?>
+                    <?php foreach ($categorias as $categoria) : ?>
+                        <div class="_item <?php if (++$count == 1) echo 'active'; ?>"><a href="#<?= $categoria->nome; ?>"><?= $categoria->nome; ?></a></div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="_botao _left hide-on-small-only">
+                    <a class="scrollLeft" href="#"><strong><i class="material-icons red-text">arrow_back</i></strong></a>
+                </div>
+                <div class="_botao _right hide-on-small-only">
+                    <a class="scrollRight" href="#"><strong><i class="material-icons red-text">arrow_forward</i></strong></a>
+                </div>
+            </div>
         </div>
+
+    </div>
+</nav>
+
+<div class="section no-pad">
+    <div class="conteudo-principal">
+        <!-- Lista de Produtos Por Categoria-->
+        <div id="lista-produtos" class="container no-pad"> </div>
     </div>
 </div>
+
 
 <?php $this->load->view('_layout/footer_start'); ?>
 <script src="<?php echo base_url("assets/js/simplebar.min.js"); ?>"></script>
@@ -91,6 +97,7 @@
 </script>
 
 <script type="text/javascript">
+    var imagemPadrao = '<?= base_url() ?>' + 'assets/imagens/default/default.png';
     $(document).ready(function() {
         $('.modal').modal();
         $('.scrollspy').scrollSpy();
@@ -132,7 +139,7 @@
                         ultima_categoria = value.categoria;
                     else
                         ultima_categoria = false;
-
+                    var imagemActual = '<?= base_url() ?>' + value.imagem;
                     InserirDadosNaLista({
                         id: value.id,
                         ancora: ultima_categoria,
@@ -140,7 +147,7 @@
                         nome: value.nome,
                         descricao: value.descricao,
                         valor: value.valor,
-                        imagem: value.imagem == null ? '<?= base_url() ?>' + 'assets/imagens/default/default.png' : '<?= base_url() ?>' + value.imagem
+                        imagem: ImagemExiste(imagemActual) ? imagemActual : imagemPadrao
                     });
 
                 });
@@ -152,6 +159,12 @@
                 $('._menu').hide();
             }
         });
+    }
+
+    function ImagemExiste(url) {
+        var img = new Image();
+        img.src = url;
+        return img.height != 0;
     }
 
     function InserirDadosNaLista(dados) {

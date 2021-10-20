@@ -30,7 +30,9 @@ class AuthController extends CI_Controller
                 $this->session->set_userdata('usuario_logado', $resultado);
                 redirect('admin');
             } else {
-                redirect('admin/entrar');
+                $this->mensagem->AddMensagemErro("Email ou Senha errada.");
+                $this->mensagem->MostrarMensagens();
+                $this->load->view('admin/login');
             }
         }
     }

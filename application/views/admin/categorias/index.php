@@ -1,5 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <?php $this->load->view('admin/header'); ?>
+</nav>
 
 <div class="section no-pad-bot">
     <div class="container">
@@ -15,6 +16,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Tipo</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -22,6 +24,7 @@
                     <?php foreach ($categorias as $categoria) : ?>
                         <tr>
                             <td><?php echo  $categoria->nome ?></td>
+                            <td><?php echo  $categoria->tipo ?></td>
                             <td class="right">
                                 <a href="<?php echo site_url('admin/categoria/details/' . $categoria->id) ?>">
                                     <i class="material-icons">remove_red_eye</i></a>

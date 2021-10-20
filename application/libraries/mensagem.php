@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class mensagem
+class Mensagem
 {
     public $SucessoNoCadastro = 'Cadastro feito com sucesso!';
     public $SucessoNaAlteracao = 'Alteração feita com sucesso!';
